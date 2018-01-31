@@ -9,13 +9,13 @@ function fetched(post) {
 }
 
 export function fetch(id) {
-  return (dispatch, getState, { axios }) => {
+  return (dispatch, getState, { api }) => {
     dispatch(fetching(id));
 
     return (
-      axios
+      api
         .get(`https://jsonplaceholder.typicode.com/posts/${id}`)
-        .then(({ data }) => dispatch(fetched(data)))
+        .then(data => dispatch(fetched(data)))
         // We use 'react-jobs' to call our actions.  We don't want to return
         // the actual action to the 'react-jobs' withJob as it will cause
         // the data to be serialized into the react-jobs state by the server.

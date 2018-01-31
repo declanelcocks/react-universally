@@ -1,17 +1,19 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
-import axios from 'axios';
+import apiService from '../services/api';
 import reducer from '../reducers';
 
 function configureStore(initialState) {
+  const api = apiService.create();
+
   const enhancers = compose(
     // Middleware store enhancer.
     applyMiddleware(
       // Initialising redux-thunk with extra arguments will pass the below
       // arguments to all the redux-thunk actions. Below we are passing a
-      // preconfigured axios instance which can be used to fetch data with.
+      // preconfigured api instance which can be used to fetch data with.
       // @see https://github.com/gaearon/redux-thunk
-      thunk.withExtraArgument({ axios }),
+      thunk.withExtraArgument({ api }),
     ),
     // Redux Dev Tools store enhancer.
     // @see https://github.com/zalmoxisus/redux-devtools-extension
@@ -42,25 +44,5 @@ function configureStore(initialState) {
 
   return store;
 }
-
-// NOTE: If we create an '/api' endpoint in our application then we will neeed to
-// configure the axios instances so that they will resolve to the proper URL
-// endpoints on the server. We have to provide absolute URLs for any of our
-// server bundles. To do so we can set the default 'baseURL' for axios. Any
-// relative path requests will then be appended to the 'baseURL' in order to
-// form an absolute URL.
-// We don't need to worry about this for client side executions, relative paths
-// will work fine there.
-// Example:
-//
-// const axiosConfig = process.env.IS_NODE === true
-//   ? { baseURL: process.env.NOW_URL || notEmpty(process.env.SERVER_URL) }
-//   : {};
-//
-// Then we will then have to initialise our redux-thunk middlware like so:
-//
-// thunk.withExtraArgument({
-//   axios: axios.create(axiosConfig),
-// })
 
 export default configureStore;
