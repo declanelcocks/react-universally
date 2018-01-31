@@ -204,6 +204,7 @@ const values = {
           'react-redux',
           'redux-thunk',
           'axios',
+          'styled-components',
         ],
 
         // The name of the vendor DLL.

@@ -53,6 +53,7 @@ function ServerHTML(props) {
     reactAppString,
     routerState,
     storeState,
+    styleElement,
   } = props;
 
   // Creates an inline script definition that is protected by the nonce.
@@ -148,6 +149,7 @@ function ServerHTML(props) {
         <KeyedComponent key={idx}>{x}</KeyedComponent>
       ))}
       appBodyString={reactAppString}
+      styleElement={styleElement}
     />
   );
 }
@@ -167,6 +169,8 @@ ServerHTML.propTypes = {
   routerState: PropTypes.object,
   // eslint-disable-next-line react/forbid-prop-types
   storeState: PropTypes.object,
+  // eslint-disable-next-line react/forbid-prop-types
+  styleElement: PropTypes.array,
 };
 
 ServerHTML.defaultProps = {
