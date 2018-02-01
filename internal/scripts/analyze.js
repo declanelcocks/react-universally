@@ -38,10 +38,7 @@ clientCompiler.run((err, stats) => {
     console.error(err)
   } else {
     // Write out the json stats file.
-    fs.writeFileSync(
-      anaylzeFilePath,
-      JSON.stringify(stats.toJson('verbose'), null, 4),
-    )
+    fs.writeFileSync(anaylzeFilePath, JSON.stringify(stats.toJson(), null, 4))
 
     // Run the bundle analyzer against the stats file.
     const cmd = `webpack-bundle-analyzer ${anaylzeFilePath} ${config(
