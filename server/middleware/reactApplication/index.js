@@ -10,6 +10,7 @@ import {
   AsyncComponentProvider,
   createAsyncContext,
 } from 'react-async-component';
+import { ServerStyleSheet } from 'styled-components';
 import asyncBootstrapper from 'react-async-bootstrapper';
 
 import config from '../../../config';
@@ -29,6 +30,8 @@ export default function reactApplicationMiddleware(request, response) {
   }
   const { locals: { nonce } } = response;
 
+  const sheet = new ServerStyleSheet();
+
   // It's possible to disable SSR, which can be useful in development mode.
   // In this case traditional client side only rendering will occur.
   if (config('disableSSR')) {
@@ -41,7 +44,9 @@ export default function reactApplicationMiddleware(request, response) {
     }
     // SSR is disabled so we will return an "empty" html page and
     // rely on the client to initialize and render the react application.
-    const html = renderToStaticMarkup(<ServerHTML nonce={nonce} />);
+    const html = renderToStaticMarkup(
+      sheet.collectStyles(<ServerHTML nonce={nonce} />),
+    );
     response.status(200).send(`<!DOCTYPE html>${html}`);
     return;
   }
@@ -65,12 +70,13 @@ export default function reactApplicationMiddleware(request, response) {
   // Pass our app into the react-async-component helper so that any async
   // components are resolved for the render.
   asyncBootstrapper(app).then(() => {
-    const appString = renderToString(app);
-
+    const appString = renderToString(sheet.collectStyles(app));
+    const styleElement = sheet.getStyleElement();
     // Generate the html response.
     const html = renderToNodeStream(
       <ServerHTML
         reactAppString={appString}
+        styleElement={styleElement}
         nonce={nonce}
         helmet={Helmet.rewind()}
         asyncComponentsState={asyncComponentsContext.getState()}
