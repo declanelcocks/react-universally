@@ -5,8 +5,8 @@
  * values no matter where the code is being executed (i.e. browser/node).
  *
  * e.g.
- *   import config from '../config';
- *   config('welcomeMessage'); // => "Hello World!"
+ *   import config from '../config'
+ *   config('welcomeMessage') // => "Hello World!"
  */
 
 /* eslint-disable no-console */
@@ -15,7 +15,7 @@
 
 // PRIVATES
 
-let configCache;
+let configCache
 
 /**
  * This resolves the correct configuration source based on the execution
@@ -27,7 +27,7 @@ let configCache;
  */
 function resolveConfigForBrowserOrNode() {
   if (configCache) {
-    return configCache;
+    return configCache
   }
 
   // NOTE: By using the "process.env.BUILD_FLAG_IS_NODE" flag here this block of code
@@ -40,8 +40,8 @@ function resolveConfigForBrowserOrNode() {
   ) {
     // i.e. running in our server/node process.
     // eslint-disable-next-line global-require
-    configCache = require('./values').default;
-    return configCache;
+    configCache = require('./values').default
+    return configCache
   }
 
   // To get here we are likely running in the browser.
@@ -50,14 +50,14 @@ function resolveConfigForBrowserOrNode() {
     typeof window !== 'undefined' &&
     typeof window.__CLIENT_CONFIG__ === 'object'
   ) {
-    configCache = window.__CLIENT_CONFIG__;
+    configCache = window.__CLIENT_CONFIG__
   } else {
     // To get here we must be running in the browser.
-    console.warn('No client configuration object was bound to the window.');
-    configCache = {};
+    console.warn('No client configuration object was bound to the window.')
+    configCache = {}
   }
 
-  return configCache;
+  return configCache
 }
 
 // EXPORT
@@ -66,7 +66,7 @@ function resolveConfigForBrowserOrNode() {
  * This function wraps up the boilerplate needed to access the correct
  * configuration depending on whether your code will get executed in the
  * browser/node.
- * 
+ *
  *  - For the browser the config values are accessible from "window.__CLIENT_CONFIG__"
  *  - For a node process they are accessible from "<root>/config/values.js".
  *
@@ -80,31 +80,31 @@ function resolveConfigForBrowserOrNode() {
  *   }
  *
  * You can use this function to access "bar" like so:
- *   import config from '../config';
- *   const value = config('foo.bar');
+ *   import config from '../config'
+ *   const value = config('foo.bar')
  *
  * And you can access "bob" like so:
- *   import config from '../config';
- *   const value = config('bob');
+ *   import config from '../config'
+ *   const value = config('bob')
  *
  * If any part of the path isn't available as a configuration key/value then
  * an error will be thrown indicating that a respective configuration value
  * could not be found at the given path.
  */
 export default function get(path) {
-  const parts = typeof path === 'string' ? path.split('.') : path;
+  const parts = typeof path === 'string' ? path.split('.') : path
 
   if (parts.length === 0) {
     throw new Error(
       'You must provide the path to the configuration value you would like to consume.',
-    );
+    )
   }
-  let result = resolveConfigForBrowserOrNode();
+  let result = resolveConfigForBrowserOrNode()
   for (let i = 0; i < parts.length; i += 1) {
     if (result === undefined) {
       const errorMessage = `Failed to resolve configuration value at "${parts.join(
         '.',
-      )}".`;
+      )}".`
       // This "if" block gets stripped away by webpack for production builds.
       if (
         process.env.BUILD_FLAG_IS_DEV === 'true' &&
@@ -112,11 +112,11 @@ export default function get(path) {
       ) {
         throw new Error(
           `${errorMessage} We have noticed that you are trying to access this configuration value from the client bundle (i.e. code that will be executed in a browser). For configuration values to be exposed to the client bundle you must ensure that the path is added to the client configuration filter in the project configuration values file.`,
-        );
+        )
       }
-      throw new Error(errorMessage);
+      throw new Error(errorMessage)
     }
-    result = result[parts[i]];
+    result = result[parts[i]]
   }
-  return result;
+  return result
 }

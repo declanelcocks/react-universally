@@ -1,8 +1,8 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import serialize from 'serialize-javascript';
-import filterWithRules from '../../shared/utils/objects/filterWithRules';
-import values from '../values';
+import React from 'react'
+import PropTypes from 'prop-types'
+import serialize from 'serialize-javascript'
+import filterWithRules from '../../shared/utils/objects/filterWithRules'
+import values from '../values'
 
 // Filter the config down to the properties that are allowed to be included
 // in the HTML response.
@@ -11,9 +11,9 @@ const clientConfig = filterWithRules(
   values.clientConfigFilter,
   // The config values to filter.
   values,
-);
+)
 
-const serializedClientConfig = serialize(clientConfig);
+const serializedClientConfig = serialize(clientConfig)
 
 /**
  * A react component that generates a script tag that binds the allowed
@@ -32,11 +32,11 @@ function ClientConfig({ nonce }) {
         __html: `window.__CLIENT_CONFIG__=${serializedClientConfig}`,
       }}
     />
-  );
+  )
 }
 
 ClientConfig.propTypes = {
   nonce: PropTypes.string.isRequired,
-};
+}
 
-export default ClientConfig;
+export default ClientConfig

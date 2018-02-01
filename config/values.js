@@ -5,7 +5,7 @@
  * absolute paths should be resolved during runtime by our build internal/server.
  */
 
-import * as EnvVars from './utils/envVars';
+import * as EnvVars from './utils/envVars'
 
 const values = {
   // The configuration values that should be exposed to our client bundle.
@@ -269,16 +269,16 @@ const values = {
     // detail which bundle and mode is being targetted for the current function run.
     babelConfig: (babelConfig, buildOptions) => {
       // eslint-disable-next-line no-unused-vars
-      const { target, mode } = buildOptions;
+      const { target, mode } = buildOptions
 
       // Example
       /*
       if (target === 'server' && mode === 'development') {
-        babelConfig.presets.push('foo');
+        babelConfig.presets.push('foo')
       }
      */
 
-      return babelConfig;
+      return babelConfig
     },
 
     // This plugin allows you to provide final adjustments your webpack
@@ -292,33 +292,33 @@ const values = {
     // detail which bundle and mode is being targetted for the current function run.
     webpackConfig: (webpackConfig, buildOptions) => {
       // eslint-disable-next-line no-unused-vars
-      const { target, mode } = buildOptions;
+      const { target, mode } = buildOptions
 
       // Example:
       /*
       if (target === 'server' && mode === 'development') {
-        webpackConfig.plugins.push(new MyCoolWebpackPlugin());
+        webpackConfig.plugins.push(new MyCoolWebpackPlugin())
       }
       */
 
       // Debugging/Logging Example:
       /*
       if (target === 'server') {
-        console.log(JSON.stringify(webpackConfig, null, 4));
+        console.log(JSON.stringify(webpackConfig, null, 4))
       }
       */
 
-      return webpackConfig;
+      return webpackConfig
     },
   },
-};
+}
 
 // This protects us from accidentally including this configuration in our
 // client bundle. That would be a big NO NO to do. :)
 if (process.env.BUILD_FLAG_IS_CLIENT === 'true') {
   throw new Error(
     "You shouldn't be importing the `<projectroot>/config/values.js` directly into code that will be included in your 'client' bundle as the configuration object will be sent to user's browsers. This could be a security risk! Instead, use the `config` helper function located at `<projectroot>/config/index.js`.",
-  );
+  )
 }
 
-export default values;
+export default values
