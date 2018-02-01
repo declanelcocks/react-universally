@@ -1,8 +1,8 @@
 /* eslint-disable react/no-danger */
 /* eslint-disable jsx-a11y/html-has-lang */
 
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from 'react'
+import PropTypes from 'prop-types'
 
 /**
  * The is the HTML shell for our React Application.
@@ -14,7 +14,7 @@ function HTML(props) {
     bodyElements,
     appBodyString,
     styleElement,
-  } = props;
+  } = props
 
   return (
     <html {...htmlAttributes}>
@@ -27,7 +27,7 @@ function HTML(props) {
         {bodyElements}
       </body>
     </html>
-  );
+  )
 }
 
 HTML.propTypes = {
@@ -38,7 +38,7 @@ HTML.propTypes = {
   appBodyString: PropTypes.string,
   // eslint-disable-next-line react/forbid-prop-types
   styleElement: PropTypes.array,
-};
+}
 
 HTML.defaultProps = {
   htmlAttributes: null,
@@ -46,8 +46,8 @@ HTML.defaultProps = {
   bodyElements: null,
   appBodyString: '',
   styleElement: null,
-};
+}
 
 // EXPORT
 
-export default HTML;
+export default HTML

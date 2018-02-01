@@ -1,22 +1,6 @@
-import React from 'react';
-import { Link, Route } from 'react-router-dom';
-import Post from './Post';
+import { asyncComponent } from 'react-async-component'
 
-const AsyncPostsRoute = () => (
-  <div>
-    <ul>
-      <li>
-        <Link to="/posts/1">Post 1</Link>
-      </li>
-      <li>
-        <Link to="/posts/2">Post 2</Link>
-      </li>
-    </ul>
-
-    <hr />
-
-    <Route path="/posts/:id" component={Post} />
-  </div>
-);
-
-export default AsyncPostsRoute;
+export default asyncComponent({
+  // include home and about route in same chunk e.g main
+  resolve: () => System.import(/* webpackChunkName: "posts" */ './PostsRoute'),
+})

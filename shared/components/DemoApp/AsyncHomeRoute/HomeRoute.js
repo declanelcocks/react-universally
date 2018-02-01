@@ -1,7 +1,7 @@
-import React from 'react';
-import Helmet from 'react-helmet';
+import React from 'react'
+import Helmet from 'react-helmet'
 
-import config from '../../../../config';
+import config from '../../../../config'
 
 function HomeRoute() {
   return (
@@ -19,7 +19,7 @@ function HomeRoute() {
         decisions (Redux/Mobx etc).
       </p>
     </div>
-  );
+  )
 }
 
-export default HomeRoute;
+export default HomeRoute

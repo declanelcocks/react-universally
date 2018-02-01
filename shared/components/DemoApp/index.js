@@ -1,21 +1,21 @@
-import 'normalize.css/normalize.css';
+import 'normalize.css/normalize.css'
 
-import React from 'react';
-import Switch from 'react-router-dom/Switch';
-import Route from 'react-router-dom/Route';
-import Helmet from 'react-helmet';
+import React from 'react'
+import Switch from 'react-router-dom/Switch'
+import Route from 'react-router-dom/Route'
+import Helmet from 'react-helmet'
 
-import config from '../../../config';
+import config from '../../../config'
 
-import './globals.css';
+import './globals.css'
 
-import Error404 from './Error404';
-import Header from './Header';
+import Error404 from './Error404'
+import Header from './Header'
 
-import AsyncHomeRoute from './AsyncHomeRoute';
-import AsyncCounterRoute from './AsyncCounterRoute';
-import AsyncPostsRoute from './AsyncPostsRoute';
-import AsyncAboutRoute from './AsyncAboutRoute';
+import AsyncHomeRoute from './AsyncHomeRoute'
+import AsyncCounterRoute from './AsyncCounterRoute'
+import AsyncPostsRoute from './AsyncPostsRoute'
+import AsyncAboutRoute from './AsyncAboutRoute'
 
 function DemoApp() {
   return (
@@ -168,7 +168,7 @@ function DemoApp() {
         </Switch>
       </div>
     </div>
-  );
+  )
 }
 
-export default DemoApp;
+export default DemoApp
