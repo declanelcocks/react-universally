@@ -24,6 +24,7 @@ const values = {
     polyfillIO: true,
     // We need to expose all the htmlPage settings.
     htmlPage: true,
+    apiUrl: true,
   },
 
   // The host on which the server should run.
@@ -31,6 +32,9 @@ const values = {
 
   // The port on which the server should run.
   port: EnvVars.number('PORT', 1337),
+
+  // Default URL to use when making API requests
+  apiUrl: EnvVars.string('API_URL', 'http://localhost:3000/api'),
 
   // The port on which the client bundle development server should run.
   clientDevServerPort: EnvVars.number('CLIENT_DEV_PORT', 7331),
@@ -201,6 +205,10 @@ const values = {
           'react-helmet',
           'react-router-dom',
           'styled-components',
+          'redux',
+          'react-redux',
+          'redux-thunk',
+          'isomorphic-fetch',
         ],
 
         // The name of the vendor DLL.

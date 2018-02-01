@@ -11,13 +11,15 @@ import {
   createAsyncContext,
 } from 'react-async-component';
 import { ServerStyleSheet } from 'styled-components';
+import { JobProvider, createJobContext } from 'react-jobs';
 import asyncBootstrapper from 'react-async-bootstrapper';
+import { Provider } from 'react-redux';
+import configureStore from '../../../shared/redux/configureStore';
 
 import config from '../../../config';
-
-import ServerHTML from './ServerHTML';
 import DemoApp from '../../../shared/components/DemoApp';
 import { log } from '../../../shared/utils/logging';
+import ServerHTML from './ServerHTML';
 
 /**
  * React application middleware, supports server side rendering.
@@ -58,12 +60,23 @@ export default function reactApplicationMiddleware(request, response) {
   // query for the results of the render.
   const reactRouterContext = {};
 
+  // Create the job context for our provider, this grants
+  // us the ability to track the resolved jobs to send back to the client.
+  const jobContext = createJobContext();
+
+  // Create the redux store.
+  const store = configureStore();
+
   // Declare our React application.
   const app = (
     <AsyncComponentProvider asyncContext={asyncComponentsContext}>
-      <StaticRouter location={request.url} context={reactRouterContext}>
-        <DemoApp />
-      </StaticRouter>
+      <JobProvider jobContext={jobContext}>
+        <StaticRouter location={request.url} context={reactRouterContext}>
+          <Provider store={store}>
+            <DemoApp />
+          </Provider>
+        </StaticRouter>
+      </JobProvider>
     </AsyncComponentProvider>
   );
 
@@ -79,6 +92,9 @@ export default function reactApplicationMiddleware(request, response) {
         styleElement={styleElement}
         nonce={nonce}
         helmet={Helmet.rewind()}
+        storeState={store.getState()}
+        routerState={reactRouterContext}
+        jobsState={jobContext.getState()}
         asyncComponentsState={asyncComponentsContext.getState()}
       />,
     );

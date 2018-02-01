@@ -1,6 +1,6 @@
 ### Feature Branch
 
-Note: This is a feature branch of `react-universally`. Please see the [`FEATURE_STYLED_COMPONENTS.md`](/docs/FEATURE_STYLED_COMPONENTS.md) for more information on this branch.
+Note: This is a feature branch of `react-universally`.
 
 ---
 
