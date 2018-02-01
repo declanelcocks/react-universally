@@ -1,5 +1,3 @@
-/* eslint-disable import/prefer-default-export */
+import removeNil from './removeNil'
 
-import removeNil from './removeNil';
-
-export { removeNil };
+export { removeNil }
