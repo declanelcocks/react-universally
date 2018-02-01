@@ -10,13 +10,16 @@ import {
   AsyncComponentProvider,
   createAsyncContext,
 } from 'react-async-component';
+import { JobProvider, createJobContext } from 'react-jobs';
+import { ServerStyleSheet } from 'styled-components';
 import asyncBootstrapper from 'react-async-bootstrapper';
+import { Provider } from 'react-redux';
+import configureStore from '../../../shared/redux/configureStore';
 
 import config from '../../../config';
-
-import ServerHTML from './ServerHTML';
 import DemoApp from '../../../shared/components/DemoApp';
 import { log } from '../../../shared/utils/logging';
+import ServerHTML from './ServerHTML';
 
 /**
  * React application middleware, supports server side rendering.
@@ -27,7 +30,10 @@ export default function reactApplicationMiddleware(request, response) {
   if (typeof response.locals.nonce !== 'string') {
     throw new Error('A "nonce" value has not been attached to the response');
   }
+
   const { locals: { nonce } } = response;
+
+  const sheet = new ServerStyleSheet();
 
   // It's possible to disable SSR, which can be useful in development mode.
   // In this case traditional client side only rendering will occur.
@@ -41,7 +47,9 @@ export default function reactApplicationMiddleware(request, response) {
     }
     // SSR is disabled so we will return an "empty" html page and
     // rely on the client to initialize and render the react application.
-    const html = renderToStaticMarkup(<ServerHTML nonce={nonce} />);
+    const html = renderToStaticMarkup(
+      sheet.collectStyles(<ServerHTML nonce={nonce} />),
+    );
     response.status(200).send(`<!DOCTYPE html>${html}`);
     return;
   }
@@ -53,26 +61,41 @@ export default function reactApplicationMiddleware(request, response) {
   // query for the results of the render.
   const reactRouterContext = {};
 
+  // Create the job context for our provider, this grants
+  // us the ability to track the resolved jobs to send back to the client.
+  const jobContext = createJobContext();
+
+  // Create the redux store.
+  const store = configureStore();
+
   // Declare our React application.
   const app = (
     <AsyncComponentProvider asyncContext={asyncComponentsContext}>
-      <StaticRouter location={request.url} context={reactRouterContext}>
-        <DemoApp />
-      </StaticRouter>
+      <JobProvider jobContext={jobContext}>
+        <StaticRouter location={request.url} context={reactRouterContext}>
+          <Provider store={store}>
+            <DemoApp />
+          </Provider>
+        </StaticRouter>
+      </JobProvider>
     </AsyncComponentProvider>
   );
 
   // Pass our app into the react-async-component helper so that any async
   // components are resolved for the render.
   asyncBootstrapper(app).then(() => {
-    const appString = renderToString(app);
-
+    const appString = renderToString(sheet.collectStyles(app));
+    const styleElement = sheet.getStyleElement();
     // Generate the html response.
     const html = renderToNodeStream(
       <ServerHTML
         reactAppString={appString}
+        styleElement={styleElement}
         nonce={nonce}
         helmet={Helmet.rewind()}
+        storeState={store.getState()}
+        routerState={reactRouterContext}
+        jobsState={jobContext.getState()}
         asyncComponentsState={asyncComponentsContext.getState()}
       />,
     );

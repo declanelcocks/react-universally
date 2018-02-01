@@ -9,7 +9,6 @@ import { log } from '../utils';
 function createVendorDLL(bundleName, bundleConfig) {
   const dllConfig = config('bundles.client.devVendorDLL');
 
-  // $FlowFixMe
   const pkg = require(pathResolve(appRootDir.get(), './package.json'));
 
   const devDLLDependencies = dllConfig.include.sort();
@@ -19,7 +18,11 @@ function createVendorDLL(bundleName, bundleConfig) {
   // the vendor dll.
   const currentDependenciesHash = md5(
     JSON.stringify(
-      devDLLDependencies.map(dep => [dep, pkg.dependencies[dep], pkg.devDependencies[dep]]),
+      devDLLDependencies.map(dep => [
+        dep,
+        pkg.dependencies[dep],
+        pkg.devDependencies[dep],
+      ]),
       // We do this to include any possible version numbers we may have for
       // a dependency. If these change then our hash should too, which will
       // result in a new dev dll build.
@@ -46,7 +49,11 @@ function createVendorDLL(bundleName, bundleConfig) {
       },
       plugins: [
         new webpack.DllPlugin({
-          path: pathResolve(appRootDir.get(), bundleConfig.outputPath, `./${dllConfig.name}.json`),
+          path: pathResolve(
+            appRootDir.get(),
+            bundleConfig.outputPath,
+            `./${dllConfig.name}.json`,
+          ),
           name: dllConfig.name,
         }),
       ],
@@ -65,7 +72,7 @@ function createVendorDLL(bundleName, bundleConfig) {
 
       const webpackConfig = webpackConfigFactory();
       const vendorDLLCompiler = webpack(webpackConfig);
-      vendorDLLCompiler.run((err) => {
+      vendorDLLCompiler.run(err => {
         if (err) {
           reject(err);
           return;
