@@ -11,7 +11,7 @@
     "clean": "cross-env babel-node internal/scripts/clean",
     "deploy": "babel-node internal/scripts/deploy",
     "develop": "cross-env DEPLOYMENT=development babel-node internal/development",
-    "lint": "eslint client server shared config internal",
+    "lint": "eslint --config .eslintrc *.js --ignore-path .gitignore",
     "precommit": "lint-staged",
     "prepush": "jest",
     "start": "cross-env NODE_ENV=production node build/server",
@@ -129,7 +129,7 @@
     "md5": "2.2.1",
     "modernizr-loader": "1.0.1",
     "node-notifier": "5.1.2",
-    "prettier": "1.7.4",
+    "prettier": "1.10.2",
     "react-test-renderer": "16.0.0",
     "redux-mock-store": "1.5.1",
     "regenerator-runtime": "0.11.0",
@@ -143,34 +143,5 @@
     "webpack-hot-middleware": "2.20.0",
     "webpack-md5-hash": "0.0.5",
     "webpack-node-externals": "1.6.0"
-  },
-  "eslintConfig": {
-    "parser": "babel-eslint",
-    "extends": [
-      "airbnb",
-      "prettier"
-    ],
-    "env": {
-      "browser": true,
-      "es6": true,
-      "node": true,
-      "jest": true
-    },
-    "rules": {
-      "linebreak-style": 0,
-      "no-underscore-dangle": 0,
-      "prefer-destructuring": 0,
-      "react/jsx-filename-extension": 0,
-      "react/sort-comp": 0
-    }
-  },
-  "eslintIgnore": [
-    "node_modules/",
-    "build/"
-  ],
-  "prettier": {
-    "semi": false,
-    "singleQuote": true,
-    "trailingComma": "all"
   }
 }
