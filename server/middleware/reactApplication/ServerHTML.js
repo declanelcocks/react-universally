@@ -6,26 +6,26 @@
 /* eslint-disable react/no-danger */
 /* eslint-disable react/no-array-index-key */
 
-import React, { Children } from 'react';
-import PropTypes from 'prop-types';
-import serialize from 'serialize-javascript';
+import React, { Children } from 'react'
+import PropTypes from 'prop-types'
+import serialize from 'serialize-javascript'
 
-import config from '../../../config';
-import ifElse from '../../../shared/utils/logic/ifElse';
-import removeNil from '../../../shared/utils/arrays/removeNil';
-import getClientBundleEntryAssets from './getClientBundleEntryAssets';
+import config from '../../../config'
+import ifElse from '../../../shared/utils/logic/ifElse'
+import removeNil from '../../../shared/utils/arrays/removeNil'
+import getClientBundleEntryAssets from './getClientBundleEntryAssets'
 
-import ClientConfig from '../../../config/components/ClientConfig';
-import HTML from '../../../shared/components/HTML';
+import ClientConfig from '../../../config/components/ClientConfig'
+import HTML from '../../../shared/components/HTML'
 
 // PRIVATES
 
 function KeyedComponent({ children }) {
-  return Children.only(children);
+  return Children.only(children)
 }
 
 // Resolve the assets (js/css) for the client bundle's entry chunk.
-const clientEntryAssets = getClientBundleEntryAssets();
+const clientEntryAssets = getClientBundleEntryAssets()
 
 function stylesheetTag(stylesheetFilePath) {
   return (
@@ -35,11 +35,11 @@ function stylesheetTag(stylesheetFilePath) {
       rel="stylesheet"
       type="text/css"
     />
-  );
+  )
 }
 
 function scriptTag(jsFilePath) {
-  return <script type="text/javascript" src={jsFilePath} />;
+  return <script type="text/javascript" src={jsFilePath} />
 }
 
 // COMPONENT
@@ -54,7 +54,7 @@ function ServerHTML(props) {
     jobsState,
     routerState,
     storeState,
-  } = props;
+  } = props
 
   // Creates an inline script definition that is protected by the nonce.
   const inlineScript = body => (
@@ -63,7 +63,7 @@ function ServerHTML(props) {
       type="text/javascript"
       dangerouslySetInnerHTML={{ __html: body }}
     />
-  );
+  )
 
   const headerElements = removeNil([
     ...ifElse(helmet)(() => helmet.meta.toComponent(), []),
@@ -74,7 +74,7 @@ function ServerHTML(props) {
       stylesheetTag(clientEntryAssets.css),
     ),
     ...ifElse(helmet)(() => helmet.style.toComponent(), []),
-  ]);
+  ])
 
   const bodyElements = removeNil([
     // Bind our redux store state so the client knows how to hydrate his one
@@ -134,7 +134,7 @@ function ServerHTML(props) {
       scriptTag(clientEntryAssets.js),
     ),
     ...ifElse(helmet)(() => helmet.script.toComponent(), []),
-  ]);
+  ])
 
   return (
     <HTML
@@ -151,10 +151,10 @@ function ServerHTML(props) {
       appBodyString={reactAppString}
       styleElement={styleElement}
     />
-  );
+  )
 }
 
-export default ServerHTML;
+export default ServerHTML
 
 ServerHTML.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
@@ -170,11 +170,11 @@ ServerHTML.propTypes = {
   routerState: PropTypes.object,
   // eslint-disable-next-line react/forbid-prop-types
   storeState: PropTypes.object,
-};
+}
 
 ServerHTML.defaultProps = {
   asyncComponentsState: undefined,
   helmet: undefined,
   nonce: undefined,
   reactAppString: undefined,
-};
+}
