@@ -1,16 +1,16 @@
-import { sync as globSync } from 'glob';
-import appRootDir from 'app-root-dir';
-import path from 'path';
-import HtmlWebpackPlugin from 'html-webpack-plugin';
-import OfflinePlugin from 'offline-plugin';
+import { sync as globSync } from 'glob'
+import appRootDir from 'app-root-dir'
+import path from 'path'
+import HtmlWebpackPlugin from 'html-webpack-plugin'
+import OfflinePlugin from 'offline-plugin'
 
-import config from '../../../config';
+import config from '../../../config'
 
-import ClientConfig from '../../../config/components/ClientConfig';
+import ClientConfig from '../../../config/components/ClientConfig'
 
 export default function withServiceWorker(webpackConfig, bundleConfig) {
   if (!config('serviceWorker.enabled')) {
-    return webpackConfig;
+    return webpackConfig
   }
 
   // Offline Page generation.
@@ -23,7 +23,10 @@ export default function withServiceWorker(webpackConfig, bundleConfig) {
   webpackConfig.plugins.push(
     new HtmlWebpackPlugin({
       filename: config('serviceWorker.offlinePageFileName'),
-      template: `babel-loader!${path.resolve(__dirname, './offlinePageTemplate.js')}`,
+      template: `babel-loader!${path.resolve(
+        __dirname,
+        './offlinePageTemplate.js',
+      )}`,
       production: true,
       minify: {
         removeComments: true,
@@ -45,7 +48,7 @@ export default function withServiceWorker(webpackConfig, bundleConfig) {
         ClientConfig,
       },
     }),
-  );
+  )
 
   // We use the offline-plugin to generate the service worker.  It also
   // provides a runtime installation script which gets executed within
@@ -97,7 +100,9 @@ export default function withServiceWorker(webpackConfig, bundleConfig) {
         // of injecting all of our client scripts into the body.
         // Please see the HtmlWebpackPlugin configuration above for more
         // information on this page.
-        navigateFallbackURL: `${bundleConfig.webPath}${config('serviceWorker.offlinePageFileName')}`,
+        navigateFallbackURL: `${bundleConfig.webPath}${config(
+          'serviceWorker.offlinePageFileName',
+        )}`,
       },
       // According to the Mozilla docs, AppCache is considered deprecated.
       // @see https://mzl.la/1pOZ5wF
@@ -108,8 +113,13 @@ export default function withServiceWorker(webpackConfig, bundleConfig) {
       // Which external files should be included with the service worker?
       // Add the polyfill io script as an external if it is enabled.
       externals: (config('polyfillIO.enabled')
-        ? [`${config('polyfillIO.url')}?features=${config('polyfillIO.features').join(',')}`]
-        : [])
+        ? [
+            `${config('polyfillIO.url')}?features=${config(
+              'polyfillIO.features',
+            ).join(',')}`,
+          ]
+        : []
+      )
         // Add any included public folder assets.
         .concat(
           config('serviceWorker.includePublicAssets').reduce((acc, cur) => {
@@ -117,7 +127,7 @@ export default function withServiceWorker(webpackConfig, bundleConfig) {
               appRootDir.get(),
               config('publicAssetsPath'),
               cur,
-            );
+            )
             const publicFileWebPaths = acc.concat(
               // First get all the matching public folder files.
               globSync(publicAssetPathGlob, { nodir: true })
@@ -132,12 +142,12 @@ export default function withServiceWorker(webpackConfig, bundleConfig) {
                 // Add the leading "/" indicating the file is being hosted
                 // off the root of the application.
                 .map(relativePath => `/${relativePath}`),
-            );
-            return publicFileWebPaths;
+            )
+            return publicFileWebPaths
           }, []),
         ),
     }),
-  );
+  )
 
-  return webpackConfig;
+  return webpackConfig
 }

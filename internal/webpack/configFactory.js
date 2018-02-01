@@ -1,17 +1,17 @@
-import appRootDir from 'app-root-dir';
-import AssetsPlugin from 'assets-webpack-plugin';
-import ExtractTextPlugin from 'extract-text-webpack-plugin';
-import nodeExternals from 'webpack-node-externals';
-import path from 'path';
-import webpack from 'webpack';
-import WebpackMd5Hash from 'webpack-md5-hash';
+import appRootDir from 'app-root-dir'
+import AssetsPlugin from 'assets-webpack-plugin'
+import ExtractTextPlugin from 'extract-text-webpack-plugin'
+import nodeExternals from 'webpack-node-externals'
+import path from 'path'
+import webpack from 'webpack'
+import WebpackMd5Hash from 'webpack-md5-hash'
 
-import { happyPackPlugin, log } from '../utils';
-import { ifElse } from '../../shared/utils/logic';
-import { mergeDeep } from '../../shared/utils/objects';
-import { removeNil } from '../../shared/utils/arrays';
-import withServiceWorker from './withServiceWorker';
-import config from '../../config';
+import { happyPackPlugin, log } from '../utils'
+import { ifElse } from '../../shared/utils/logic'
+import { mergeDeep } from '../../shared/utils/objects'
+import { removeNil } from '../../shared/utils/arrays'
+import withServiceWorker from './withServiceWorker'
+import config from '../../config'
 
 /**
  * Generates a webpack configuration for the target configuration.
@@ -27,22 +27,22 @@ import config from '../../config';
  * @return {Object} The webpack configuration.
  */
 export default function webpackConfigFactory(buildOptions) {
-  const { target, optimize = false } = buildOptions;
+  const { target, optimize = false } = buildOptions
 
-  const isProd = optimize;
-  const isDev = !isProd;
-  const isClient = target === 'client';
-  const isServer = target === 'server';
-  const isNode = !isClient;
+  const isProd = optimize
+  const isDev = !isProd
+  const isClient = target === 'client'
+  const isServer = target === 'server'
+  const isNode = !isClient
 
   // Preconfigure some ifElse helper instnaces. See the util docs for more
   // information on how this util works.
-  const ifDev = ifElse(isDev);
-  const ifProd = ifElse(isProd);
-  const ifNode = ifElse(isNode);
-  const ifClient = ifElse(isClient);
-  const ifDevClient = ifElse(isDev && isClient);
-  const ifProdClient = ifElse(isProd && isClient);
+  const ifDev = ifElse(isDev)
+  const ifProd = ifElse(isProd)
+  const ifNode = ifElse(isNode)
+  const ifClient = ifElse(isClient)
+  const ifDevClient = ifElse(isDev && isClient)
+  const ifProdClient = ifElse(isProd && isClient)
 
   log({
     level: 'info',
@@ -50,24 +50,24 @@ export default function webpackConfigFactory(buildOptions) {
     message: `Creating ${isProd
       ? 'an optimised'
       : 'a development'} bundle configuration for the "${target}"`,
-  });
+  })
 
   const bundleConfig =
     isServer || isClient
       ? // This is either our "server" or "client" bundle.
         config(['bundles', target])
       : // Otherwise it must be an additional node bundle.
-        config(['additionalNodeBundles', target]);
+        config(['additionalNodeBundles', target])
 
   if (!bundleConfig) {
-    throw new Error('No bundle configuration exists for target:', target);
+    throw new Error('No bundle configuration exists for target:', target)
   }
 
   let webpackConfig = {
     // Define our entry chunks for our bundle.
     entry: {
       // We name our entry files "index" as it makes it easier for us to
-      // import bundle output files (e.g. `import server from './build/server';`)
+      // import bundle output files (e.g. `import server from './build/server'`)
       index: removeNil([
         // We are using polyfill.io instead of the very heavy babel-polyfill.
         // Therefore we need to add the regenerator-runtime as polyfill.io
@@ -216,7 +216,7 @@ export default function webpackConfigFactory(buildOptions) {
       ifNode(
         () =>
           new webpack.BannerPlugin({
-            banner: 'require("source-map-support").install();',
+            banner: 'require("source-map-support").install()',
             raw: true,
             entryOnly: false,
           }),
@@ -244,14 +244,14 @@ export default function webpackConfigFactory(buildOptions) {
       //
       // For example you may have the following in your code:
       //   if (process.env.BUILD_FLAG_IS_CLIENT === 'true') {
-      //     console.log('Foo');
+      //     console.log('Foo')
       //   }
       //
       // If the BUILD_FLAG_IS_CLIENT was assigned a value of `false` the above
       // code would be converted to the following by the webpack bundling
       // process:
       //   if ('false' === 'true') {
-      //     console.log('Foo');
+      //     console.log('Foo')
       //   }
       //
       // When your bundle is built using the UglifyJsPlugin unreachable code
@@ -547,12 +547,12 @@ export default function webpackConfigFactory(buildOptions) {
         },
       ],
     },
-  };
+  }
 
   if (isProd && isClient) {
-    webpackConfig = withServiceWorker(webpackConfig, bundleConfig);
+    webpackConfig = withServiceWorker(webpackConfig, bundleConfig)
   }
 
   // Apply the configuration middleware.
-  return config('plugins.webpackConfig')(webpackConfig, buildOptions);
+  return config('plugins.webpackConfig')(webpackConfig, buildOptions)
 }
