@@ -59,7 +59,6 @@
   "homepage": "https://github.com/ctrlplusb/react-universally#readme",
   "dependencies": {
     "app-root-dir": "1.0.2",
-    "axios": "0.16.1",
     "chalk": "2.2.0",
     "compression": "1.7.1",
     "cross-env": "5.1.0",
