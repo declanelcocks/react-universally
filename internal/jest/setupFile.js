@@ -5,6 +5,15 @@ import Adapter from 'enzyme-adapter-react-16'
 
 configure({ adapter: new Adapter() })
 
+global.api = {
+  post: () => {},
+  get: () => {},
+  put: () => {},
+  delete: () => {},
+  setToken: () => {},
+  unsetToken: () => {},
+}
+
 const mockResponse = (status, statusText, response) =>
   new window.Response(JSON.stringify(response), {
     status,
