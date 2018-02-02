@@ -1,7 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import Logo from './Logo'
-import Menu from './Menu'
+import { Logo, Menu } from '../../atoms'
 
 const HeaderWrapper = styled.div`
   font-size: 1.5em;
