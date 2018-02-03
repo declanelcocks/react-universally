@@ -9,12 +9,14 @@ import config from '../../../config'
 
 import './globals.css'
 
-import { AsyncAboutRoute, Error404 } from '../pages'
+import {
+  AsyncAboutRoute,
+  AsyncCounterRoute,
+  AsyncHomeRoute,
+  AsyncPostsRoute,
+  Error404,
+} from '../pages'
 import { Header } from '../molecules'
-
-import AsyncHomeRoute from './AsyncHomeRoute'
-import AsyncCounterRoute from './AsyncCounterRoute'
-import AsyncPostsRoute from './AsyncPostsRoute'
 
 function DemoApp() {
   return (
