@@ -17,7 +17,7 @@ import { Provider } from 'react-redux'
 import configureStore from '../../../shared/redux/configureStore'
 
 import config from '../../../config'
-import DemoApp from '../../../shared/components/DemoApp'
+import App from '../../../shared/components/App'
 import { log } from '../../../shared/utils/logging'
 import ServerHTML from './ServerHTML'
 
@@ -73,7 +73,7 @@ export default function reactApplicationMiddleware(request, response) {
       <JobProvider jobContext={jobContext}>
         <StaticRouter location={request.url} context={reactRouterContext}>
           <Provider store={store}>
-            <DemoApp />
+            <App />
           </Provider>
         </StaticRouter>
       </JobProvider>
