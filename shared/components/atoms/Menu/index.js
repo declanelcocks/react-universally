@@ -1,11 +1,16 @@
 import React from 'react'
 import Link from 'react-router-dom/Link'
+import styled from 'styled-components'
+
+const List = styled.ul`
+  margin-top: 0.875rem;
+  padding: 0.875rem;
+  background-color: #c6c6c6;
+`
 
 function Menu() {
   return (
-    <ul
-      style={{ marginTop: '1rem', padding: '1rem', backgroundColor: '#c6c6c6' }}
-    >
+    <List>
       <li>
         <Link to="/">Home</Link>
       </li>
@@ -18,7 +23,7 @@ function Menu() {
       <li>
         <Link to="/about">About</Link>
       </li>
-    </ul>
+    </List>
   )
 }
 

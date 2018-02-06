@@ -16,6 +16,7 @@
     "prepush": "jest",
     "start": "cross-env NODE_ENV=production node build/server",
     "test": "jest",
+    "test:watch": "jest --watchAll",
     "test:coverage": "jest --coverage",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
@@ -90,10 +91,15 @@
     "redux-thunk": "2.2.0",
     "serialize-javascript": "1.4.0",
     "styled-components": "3.1.5",
+    "styled-theme": "0.3.3",
+    "styled-tools": "0.4.0",
     "uuid": "3.2.1"
   },
   "devDependencies": {
     "@storybook/addon-actions": "^3.3.12",
+    "@storybook/addon-console": "1.0.0",
+    "@storybook/addon-info": "3.3.12",
+    "@storybook/addon-knobs": "3.3.12",
     "@storybook/addon-links": "^3.3.12",
     "@storybook/addons": "^3.3.12",
     "@storybook/react": "^3.3.12",

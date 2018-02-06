@@ -8,10 +8,12 @@ import { AppContainer as ReactHotLoader } from 'react-hot-loader'
 import { AsyncComponentProvider } from 'react-async-component'
 import { JobProvider } from 'react-jobs'
 import { Provider } from 'react-redux'
+import { ThemeProvider } from 'styled-components'
 import configureStore from '../shared/redux/configureStore'
 
 import './polyfills'
 
+import theme from '../shared/components/theme'
 import App from '../shared/components/App'
 
 // Get the DOM Element that will host our React application.
@@ -39,7 +41,7 @@ const rehydrateState = window.__JOBS_STATE__
 /**
  * Renders the given React Application component.
  */
-function renderApp(TheApp) {
+function renderApp(App) {
   // Firstly, define our full application component, wrapping the given
   // component app with a browser based version of react router.
   const app = (
@@ -48,7 +50,9 @@ function renderApp(TheApp) {
         <JobProvider rehydrateState={rehydrateState}>
           <Provider store={store}>
             <BrowserRouter forceRefresh={!supportsHistory}>
-              <TheApp />
+              <ThemeProvider theme={theme}>
+                <App />
+              </ThemeProvider>
             </BrowserRouter>
           </Provider>
         </JobProvider>

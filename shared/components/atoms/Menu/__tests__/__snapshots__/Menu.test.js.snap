@@ -1,15 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Home /> renders 1`] = `
-<ul
-  style={
-    Object {
-      "backgroundColor": "#c6c6c6",
-      "marginTop": "1rem",
-      "padding": "1rem",
-    }
-  }
->
+<styled.ul>
   <li>
     <Link
       replace={false}
@@ -42,5 +34,5 @@ exports[`<Home /> renders 1`] = `
       About
     </Link>
   </li>
-</ul>
+</styled.ul>
 `;
