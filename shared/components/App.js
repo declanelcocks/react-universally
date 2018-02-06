@@ -8,14 +8,13 @@ import Helmet from 'react-helmet'
 import config from '../../config'
 import './globalStyles'
 
-import {
-  AsyncAboutRoute,
-  AsyncCounterRoute,
-  AsyncHomeRoute,
-  AsyncPostsRoute,
-  Error404,
-} from './pages'
-import { Header } from './molecules'
+import AsyncAboutRoute from './pages/AsyncAboutRoute'
+import AsyncCounterRoute from './pages/AsyncCounterRoute'
+import AsyncHomeRoute from './pages/AsyncHomeRoute'
+import AsyncPostsRoute from './pages/AsyncPostsRoute'
+import Error404 from './pages/Error404'
+
+import Header from './molecules/Header'
 
 function App() {
   return (

@@ -1,5 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 import React, { Component } from 'react'
+import Heading from '../../atoms/Heading'
 
 class CounterRoute extends Component {
   constructor(props) {
@@ -15,7 +16,7 @@ class CounterRoute extends Component {
   render() {
     return (
       <div>
-        <h3>Counter</h3>
+        <Heading level={3}>Counter</Heading>
         <p>
           <em>
             This is a small demo component that contains state. It's useful for
