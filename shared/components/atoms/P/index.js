@@ -6,7 +6,7 @@ const P = styled.p`
   font-family: ${font('primary')};
   color: ${palette('grayscale', 0)};
   margin-top: 0rem;
-  margin-bottom: 1.75rem;
+  margin-bottom: 1.5rem;
 `
 
 P.propTypes = {

@@ -9,21 +9,21 @@ const styles = css`
   color: ${palette({ grayscale: 0 }, 1)};
   font-weight: 400;
   font-size: ${switchProp(prop('level'), {
-    1: '2.8125rem',
-    2: '2rem',
-    3: '1.4375rem',
+    1: '4.125rem',
+    2: '2.5625rem',
+    3: '1.625rem',
     4: '1rem',
   })};
   line-height: ${switchProp(prop('level'), {
-    1: '3.5rem',
-    2: '3.5rem',
-    3: '1.75rem',
-    4: '1.75rem',
+    1: '4.5rem',
+    2: '3rem',
+    3: '3rem',
+    4: '1.5rem',
   })};
-  margin-top: 1.75rem;
+  margin-top: 1.5rem;
   margin-bottom: ${switchProp(prop('level'), {
-    1: '3.5rem',
-    2: '1.75rem',
+    1: '3rem',
+    2: '1.5rem',
     3: '0',
     4: '0',
   })};

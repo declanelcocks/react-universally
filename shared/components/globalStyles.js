@@ -4,13 +4,13 @@ injectGlobal`
   html {
     box-sizing: border-box;
     font-size: 16px;
-    line-height: 28px;
+    line-height: 24px;
   }
 
   body {
-    font-family: Arial, sans-serif;
+    font-family: 'Lato', sans-serif;
     font-size: 1rem;
-    line-height: 1.75rem;
+    line-height: 1.5rem;
   }
 
   *,
@@ -36,7 +36,7 @@ injectGlobal`
 
     li {
       display: inline;
-      margin: 0 .5rem;
+      margin: 0 0.5rem;
     }
   }
 `

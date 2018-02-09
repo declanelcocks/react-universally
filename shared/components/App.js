@@ -149,7 +149,7 @@ function App() {
         */}
         <link
           rel="stylesheet"
-          href="//fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic"
+          href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic"
         />
         <link
           rel="stylesheet"

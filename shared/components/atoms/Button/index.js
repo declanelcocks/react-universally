@@ -19,18 +19,18 @@ const hoverForegroundColor = ({ disabled, transparent }) =>
 const styles = css`
   display: inline-flex;
   font-family: ${font('primary')};
-  align-items: center;
-  white-space: nowrap;
   font-size: 1rem;
+  line-height: 1.5rem;
   border: 0.0625rem solid
     ${ifProp('transparent', 'currentcolor', 'transparent')};
-  height: 2.625rem;
+  padding: calc(0.5rem - 0.0625rem) 1rem;
+  border-radius: 0.125rem;
+  align-items: center;
+  white-space: nowrap;
   justify-content: center;
   text-decoration: none;
   cursor: ${ifProp('disabled', 'default', 'pointer')};
   appearance: none;
-  padding: 0 1rem;
-  border-radius: 0.125rem;
   box-sizing: border-box;
   pointer-events: ${ifProp('disabled', 'none', 'auto')};
   transition: background-color 250ms ease-out, color 250ms ease-out,
