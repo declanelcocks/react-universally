@@ -3,8 +3,8 @@ import Link from 'react-router-dom/Link'
 import styled from 'styled-components'
 
 const List = styled.ul`
-  margin-top: 0.875rem;
-  padding: 0.875rem;
+  margin: 1.5rem 0;
+  padding: 0.75rem;
   background-color: #c6c6c6;
 `
 

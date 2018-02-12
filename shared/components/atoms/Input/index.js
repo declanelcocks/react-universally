@@ -5,20 +5,30 @@ import { font, palette } from 'styled-theme'
 import { ifProp } from 'styled-tools'
 
 const styles = css`
+  display: block;
   font-family: ${font('primary')};
-  display: inline-flex;
-  margin: 0.875rem 0;
-  box-sizing: border-box;
   font-size: 1rem;
-  padding: ${ifProp(
+  /* height */
+  ${ifProp(
     { type: 'textarea' },
-    '0.4444444444em',
-    '0 0.4444444444em',
+    css`
+      height: auto;
+    `,
+    css`
+      height: calc(2.625rem - 0.0625rem);
+    `,
   )};
-  height: ${ifProp({ type: 'textarea' }, 'auto', '2.625rem')};
+  ${ifProp(
+    { type: 'textarea' },
+    css`
+      min-height: 6rem;
+    `,
+  )} margin-bottom: 1rem;
+  padding: ${ifProp({ type: 'textarea' }, '0.5rem', '0 0.5rem')};
+  box-sizing: border-box;
   color: ${palette('grayscale', 0)};
   background-color: ${palette('grayscale', 0, true)};
-  border: 1px solid
+  border: 0.0625rem solid
     ${ifProp('invalid', palette('danger', 2), palette('grayscale', 3))};
   border-radius: 2px;
 

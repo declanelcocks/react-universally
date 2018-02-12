@@ -4,14 +4,18 @@ import styled, { css } from 'styled-components'
 import { font, palette } from 'styled-theme'
 import { switchProp, prop } from 'styled-tools'
 
+// Font size: 16px
+// Line height: 1.5 (24px)
+// Scale factor: 1.5 (2:3 Perfect fifth)
+
 const styles = css`
   font-family: ${font('primary')};
   color: ${palette({ grayscale: 0 }, 1)};
   font-weight: 400;
   font-size: ${switchProp(prop('level'), {
-    1: '4.125rem',
-    2: '2.5625rem',
-    3: '1.625rem',
+    1: '3.375rem',
+    2: '2.25rem',
+    3: '1.5rem',
     4: '1rem',
   })};
   line-height: ${switchProp(prop('level'), {

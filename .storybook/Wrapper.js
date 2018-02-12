@@ -119,7 +119,7 @@ const Wrapper = ({ showBaseline, setBaselineVisibility, children }) => (
         </Fragment>
       )}
 
-      <div style={{ marginLeft: '24px' }}>{children}</div>
+      <div style={{ margin: '0 24px' }}>{children}</div>
     </Fragment>
   </ThemeProvider>
 )
