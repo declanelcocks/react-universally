@@ -15,7 +15,7 @@ const styles = css`
       height: auto;
     `,
     css`
-      height: calc(2.625rem - 0.0625rem);
+      height: calc(2.625rem - 0.125rem);
     `,
   )};
   ${ifProp(
@@ -23,23 +23,23 @@ const styles = css`
     css`
       min-height: 6rem;
     `,
-  )} margin-bottom: 1rem;
-  padding: ${ifProp({ type: 'textarea' }, '0.5rem', '0 0.5rem')};
+  )} padding: ${ifProp({ type: 'textarea' }, '0.5rem', '0 0.5rem')};
   box-sizing: border-box;
   color: ${palette('grayscale', 0)};
   background-color: ${palette('grayscale', 0, true)};
   border: 0.0625rem solid
     ${ifProp('invalid', palette('danger', 2), palette('grayscale', 3))};
   border-radius: 2px;
+  outline: none;
 
   &[type='checkbox'],
   &[type='radio'] {
-    display: inline-flex;
+    display: inline-block;
     border: 0;
     border-radius: 0;
     width: auto;
     height: auto;
-    margin: 0 0.2rem 0 0;
+    margin: 0 0.5rem 0 0;
   }
 `
 
