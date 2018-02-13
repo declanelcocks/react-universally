@@ -10,5 +10,12 @@
     ["env", { "targets": { "node": true } }],
     "stage-3",
     "react"
-  ]
+  ],
+  "env": {
+    "test": {
+      "plugins": [
+        "babel-plugin-styled-components"
+      ]
+    }
+  }
 }

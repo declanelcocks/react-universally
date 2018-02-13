@@ -41,12 +41,13 @@ const styles = css`
     height: auto;
     margin: 0 0.5rem 0 0;
   }
+
+  &::placeholder {
+    color: ${palette('grayscale', 3)};
+  }
 `
 
 const StyledTextarea = styled.textarea`
-  ${styles};
-`
-const StyledSelect = styled.select`
   ${styles};
 `
 const StyledInput = styled.input`
@@ -54,11 +55,7 @@ const StyledInput = styled.input`
 `
 
 const Input = ({ ...props }) => {
-  if (props.type === 'textarea') {
-    return <StyledTextarea {...props} />
-  } else if (props.type === 'select') {
-    return <StyledSelect {...props} />
-  }
+  if (props.type === 'textarea') return <StyledTextarea {...props} />
   return <StyledInput {...props} />
 }
 

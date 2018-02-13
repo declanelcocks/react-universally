@@ -39,7 +39,10 @@
     ],
     "testPathIgnorePatterns": [
       "<rootDir>/(build|internal|node_modules|flow-typed|public)/"
-    ]
+    ],
+    "moduleNameMapper": {
+      ".+\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga|scss|css)$": "<rootDir>/internal/jest/assetMock.js"
+    }
   },
   "repository": {
     "type": "git",
@@ -90,6 +93,7 @@
     "react-jobs": "1.0.0",
     "react-redux": "5.0.6",
     "react-router-dom": "4.2.2",
+    "react-select": "1.2.1",
     "recompose": "0.26.0",
     "redux": "3.7.2",
     "redux-thunk": "2.2.0",

@@ -7,6 +7,12 @@ import FieldComponent from '.'
 
 const required = value => (value ? undefined : 'Required')
 
+const options = [
+  { label: 'Option #1', value: 1 },
+  { label: 'Option #2', value: 2 },
+  { label: 'Option #3', value: 3 },
+]
+
 storiesOf('Field', module).add('default', () => (
   <Form
     onSubmit={values => console.log(values)}
@@ -16,6 +22,7 @@ storiesOf('Field', module).add('default', () => (
         <Field
           name="one"
           label="Text"
+          placeholder="Placeholder..."
           component={FieldComponent}
           validate={required}
         />
@@ -32,12 +39,24 @@ storiesOf('Field', module).add('default', () => (
           name="three"
           type="select"
           label="Select"
+          placeholder="Choose an option"
           component={FieldComponent}
+          options={options}
           validate={required}
         />
 
         <Field
           name="four"
+          type="multi-select"
+          label="Multi-select"
+          placeholder="Choose an option"
+          component={FieldComponent}
+          options={options}
+          validate={required}
+        />
+
+        <Field
+          name="five"
           type="checkbox"
           label="Checkbox"
           component={FieldComponent}
