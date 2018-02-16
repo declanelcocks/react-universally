@@ -1,8 +1,8 @@
-import posts from '../index'
+import reducer from './reducer'
 
 describe('Posts reducer', () => {
   it('Should return the initial state', () => {
-    expect(posts(undefined, {})).toEqual({
+    expect(reducer(undefined, {})).toEqual({
       all: [],
       byId: {},
     })

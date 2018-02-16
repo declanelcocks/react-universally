@@ -1,7 +1,7 @@
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import apiService from '../../services/api'
-import { fetch as fetchPosts } from '../posts'
+import { fetch as fetchPosts } from './actions'
 
 const api = apiService.create()
 
