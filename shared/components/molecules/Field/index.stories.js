@@ -1,11 +1,17 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { Form, Field } from 'react-final-form'
+import isBoolean from 'lodash/isBoolean'
+import isEmpty from 'lodash/isEmpty'
 
 import Button from '../../atoms/Button'
 import FieldComponent from '.'
 
-const required = value => (value ? undefined : 'Required')
+const required = value => {
+  if (isBoolean(value) && value) return undefined
+  if (typeof value === 'number' && value) return undefined
+  return isEmpty(value) ? 'Required' : undefined
+}
 
 const options = [
   { label: 'Option #1', value: 1 },

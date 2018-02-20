@@ -24,9 +24,8 @@ const Error = styled(Block)`
   min-height: 1.5rem;
 `
 
-const renderInput = props => {
-  const { type, input, meta } = props
-  const invalid = meta.touched && !!meta.error
+const renderInput = (props, invalid) => {
+  const { type, input } = props
 
   switch (type) {
     case 'select': {
@@ -44,7 +43,15 @@ const renderInput = props => {
 const Field = props => {
   const { type, label, input, meta } = props
   const renderInputFirst = type === 'checkbox' || type === 'radio'
-  const invalid = meta.touched && !!meta.error
+
+  let invalid = meta.touched && !!meta.error
+  // react-select does not set `meta.touched` to `true` after selecting an option
+  // instead, it does set `meta.active` to `true` after choosing an option
+  // it never sets this back to `false`, so we'll treat it as react-select's
+  // `touched` value
+  if (type === 'select' || type === 'multi-select') {
+    invalid = meta.active && !!meta.error
+  }
 
   return (
     <Wrapper>
@@ -59,7 +66,7 @@ const Field = props => {
         </Label>
       )}
 
-      {!renderInputFirst && renderInput(props)}
+      {!renderInputFirst && renderInput(props, invalid)}
 
       <Error id={`${input.name}Error`} role="alert" palette="danger">
         {invalid && meta.error && <span>{meta.error}</span>}
