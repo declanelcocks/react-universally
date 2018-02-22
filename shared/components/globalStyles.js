@@ -8,9 +8,28 @@ injectGlobal`
   }
 
   body {
-    font-family: 'Lato', sans-serif;
+    /*
+      https://meowni.ca/font-style-matcher/
+
+      Styles created using the above tool to try and ensure the FOUT
+      (flash of unstyled text) doesn't look drastically different. This
+      will try to ensure that when "Lato" is downloaded, it doesn't look
+      too different to "sans-serif" and, more importantly, doesn't affect
+      the layout of the page too much.
+    */
+    font-family: sans-serif;
     font-size: 1rem;
     line-height: 1.5rem;
+    letter-spacing: -0.1px;
+    word-spacing: -0.1px;
+
+    &.fontloaded {
+      font-family: 'Lato';
+      font-size: 1rem;
+      line-height: 1.5rem;
+      letter-spacing: 0px;
+      word-spacing: 0px;
+    }
   }
 
   *,
