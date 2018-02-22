@@ -9,12 +9,26 @@ import { AsyncComponentProvider } from 'react-async-component'
 import { JobProvider } from 'react-jobs'
 import { Provider } from 'react-redux'
 import { ThemeProvider } from 'styled-components'
-import configureStore from '../shared/redux/configureStore'
+import FontFaceObserver from 'fontfaceobserver'
 
 import './polyfills'
 
+import configureStore from '../shared/redux/configureStore'
 import theme from '../shared/components/theme'
 import App from '../shared/components/App'
+
+// Observe loading of our custom font
+const latoObserver = new FontFaceObserver('Lato', {})
+
+// When our custom font has loaded, add a class to the body
+latoObserver.load().then(
+  () => {
+    document.body.classList.add('fontloaded')
+  },
+  () => {
+    document.body.classList.remove('fontloaded')
+  },
+)
 
 // Get the DOM Element that will host our React application.
 const container = document.querySelector('#app')
