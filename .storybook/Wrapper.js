@@ -11,8 +11,8 @@ import Button from '../shared/components/atoms/Button'
 
 const Baseline = styled.div`
   position: absolute;
-  width: 100%;
-  height: 100%;
+  width: 400%;
+  height: 400%;
   top: 0;
   left: 0;
   background-size: 1px 24px;
@@ -38,8 +38,8 @@ const Baseline = styled.div`
 
 const OneThirdBaseline = styled.div`
   position: absolute;
-  width: 100%;
-  height: 100%;
+  width: 400%;
+  height: 400%;
   top: 8px;
   left: 0;
   background-size: 1px 24px;
@@ -65,8 +65,8 @@ const OneThirdBaseline = styled.div`
 
 const TwoThirdsBaseline = styled.div`
   position: absolute;
-  width: 100%;
-  height: 100%;
+  width: 400%;
+  height: 400%;
   top: 16px;
   left: 0;
   background-size: 1px 24px;
