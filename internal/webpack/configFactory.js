@@ -408,6 +408,7 @@ export default function webpackConfigFactory(buildOptions) {
                   // React that the subtree hasn’t changed so React can completely
                   // skip it when reconciling.
                   ifProd('transform-react-constant-elements'),
+                  'transform-class-properties',
                   [
                     'babel-plugin-styled-components',
                     {
