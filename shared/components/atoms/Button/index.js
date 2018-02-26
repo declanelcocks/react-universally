@@ -20,10 +20,15 @@ const styles = css`
   display: block;
   font-family: ${font('primary')};
   font-size: 1rem;
-  line-height: 1.5rem;
+  line-height: ${ifProp('small', '1rem', '1.5rem')};
   border: 0.0625rem solid
     ${ifProp('transparent', 'currentcolor', 'transparent')};
-  padding: calc(0.5rem - 0.0625rem) 1rem;
+  padding: ${ifProp(
+      'small',
+      'calc(0.25rem - 0.0625rem)',
+      'calc(0.5rem - 0.0625rem)',
+    )}
+    ${ifProp('small', '0.5rem', '1rem')};
   margin-bottom: 1rem;
   border-radius: 0.25rem;
   align-items: center;

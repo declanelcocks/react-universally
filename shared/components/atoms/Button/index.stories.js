@@ -46,3 +46,10 @@ storiesOf('Button', module)
       <Button href="https://google.com">My website</Button>
     </div>
   ))
+  .add('small', () => (
+    <div>
+      <Button small>Hello</Button>
+      <Button small>Hello</Button>
+      <Button small>Hello</Button>
+    </div>
+  ))
