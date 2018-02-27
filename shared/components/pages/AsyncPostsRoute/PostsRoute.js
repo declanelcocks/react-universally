@@ -1,8 +1,9 @@
 import React from 'react'
-import { Link, Route } from 'react-router-dom'
-import Post from './Post'
+import PropTypes from 'prop-types'
+import { Link } from 'react-router-dom'
+import { renderRoutes } from 'react-router-config'
 
-const AsyncPostsRoute = () => (
+const AsyncPostsRoute = ({ route }) => (
   <div>
     <ul>
       <li>
@@ -15,8 +16,14 @@ const AsyncPostsRoute = () => (
 
     <hr />
 
-    <Route path="/posts/:id" component={Post} />
+    {renderRoutes(route.routes)}
   </div>
 )
+
+AsyncPostsRoute.propTypes = {
+  route: PropTypes.shape({
+    routes: PropTypes.array.isRequired,
+  }),
+}
 
 export default AsyncPostsRoute

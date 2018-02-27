@@ -3,17 +3,13 @@ import 'normalize.css/normalize.css'
 import React from 'react'
 import Switch from 'react-router-dom/Switch'
 import Route from 'react-router-dom/Route'
+import { renderRoutes } from 'react-router-config'
 import Helmet from 'react-helmet'
 
 import config from '../../config'
 import './globalStyles'
 
-import AsyncAboutRoute from './pages/AsyncAboutRoute'
-import AsyncCounterRoute from './pages/AsyncCounterRoute'
-import AsyncHomeRoute from './pages/AsyncHomeRoute'
-import AsyncPostsRoute from './pages/AsyncPostsRoute'
-import Error404 from './pages/Error404'
-
+import routes from './routes'
 import Header from './molecules/Header'
 
 function App() {
@@ -158,13 +154,7 @@ function App() {
       </Helmet>
       <Header />
       <div style={{ paddingTop: '2rem', paddingBottom: '2rem' }}>
-        <Switch>
-          <Route exact path="/" component={AsyncHomeRoute} />
-          <Route path="/counter" component={AsyncCounterRoute} />
-          <Route path="/posts" component={AsyncPostsRoute} />
-          <Route path="/about" component={AsyncAboutRoute} />
-          <Route component={Error404} />
-        </Switch>
+        {renderRoutes(routes)}
       </div>
     </div>
   )
