@@ -3,10 +3,7 @@
 import React from 'react'
 import { hydrate } from 'react-dom'
 import BrowserRouter from 'react-router-dom/BrowserRouter'
-import asyncBootstrapper from 'react-async-bootstrapper'
 import { AppContainer as ReactHotLoader } from 'react-hot-loader'
-import { AsyncComponentProvider } from 'react-async-component'
-import { JobProvider } from 'react-jobs'
 import { Provider } from 'react-redux'
 import { ThemeProvider } from 'styled-components'
 import FontFaceObserver from 'fontfaceobserver'
@@ -44,14 +41,6 @@ const store = configureStore(
 // will force full page refreshes on each page change.
 const supportsHistory = 'pushState' in window.history
 
-// Get any rehydrateState for the async components.
-const asyncComponentsRehydrateState =
-  window.__ASYNC_COMPONENTS_REHYDRATE_STATE__
-
-// Get any "rehydrate" state sent back by the server
-// eslint-disable-next-line no-underscore-dangle
-const rehydrateState = window.__JOBS_STATE__
-
 /**
  * Renders the given React Application component.
  */
@@ -60,24 +49,17 @@ function renderApp(App) {
   // component app with a browser based version of react router.
   const app = (
     <ReactHotLoader>
-      <AsyncComponentProvider rehydrateState={asyncComponentsRehydrateState}>
-        <JobProvider rehydrateState={rehydrateState}>
-          <Provider store={store}>
-            <BrowserRouter forceRefresh={!supportsHistory}>
-              <ThemeProvider theme={theme}>
-                <App />
-              </ThemeProvider>
-            </BrowserRouter>
-          </Provider>
-        </JobProvider>
-      </AsyncComponentProvider>
+      <Provider store={store}>
+        <BrowserRouter forceRefresh={!supportsHistory}>
+          <ThemeProvider theme={theme}>
+            <App />
+          </ThemeProvider>
+        </BrowserRouter>
+      </Provider>
     </ReactHotLoader>
   )
 
-  // We use the react-async-component in order to support code splitting of
-  // our bundle output. It's important to use this helper.
-  // @see https://github.com/ctrlplusb/react-async-component
-  asyncBootstrapper(app).then(() => hydrate(app, container))
+  hydrate(app, container)
 }
 
 // Execute the first render of our app.

@@ -1,6 +1,3 @@
-import { asyncComponent } from 'react-async-component'
+import PostsRoute from './PostsRoute'
 
-export default asyncComponent({
-  // include home and about route in same chunk e.g main
-  resolve: () => System.import(/* webpackChunkName: "posts" */ './PostsRoute'),
-})
+export default PostsRoute

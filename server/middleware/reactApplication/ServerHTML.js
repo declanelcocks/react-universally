@@ -46,12 +46,10 @@ function scriptTag(jsFilePath) {
 
 function ServerHTML(props) {
   const {
-    asyncComponentsState,
     helmet,
     styleElement,
     nonce,
     reactAppString,
-    jobsState,
     routerState,
     storeState,
   } = props
@@ -86,21 +84,6 @@ function ServerHTML(props) {
     // that we can safely expose some configuration values to the
     // client bundle that gets executed in the browser.
     <ClientConfig nonce={nonce} />,
-
-    // Bind our async components state so the client knows which ones
-    // to initialise so that the checksum matches the server response.
-    // @see https://github.com/ctrlplusb/react-async-component
-    ifElse(asyncComponentsState)(() =>
-      inlineScript(
-        `window.__ASYNC_COMPONENTS_REHYDRATE_STATE__=${serialize(
-          asyncComponentsState,
-        )};`,
-      ),
-    ),
-
-    ifElse(jobsState)(() =>
-      inlineScript(`window.__JOBS_STATE__=${serialize(jobsState)}`),
-    ),
 
     ifElse(routerState)(() =>
       inlineScript(`window.__ROUTER_STATE__=${serialize(routerState)}`),
@@ -158,11 +141,7 @@ export default ServerHTML
 
 ServerHTML.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
-  asyncComponentsState: PropTypes.object,
-  // eslint-disable-next-line react/forbid-prop-types
   helmet: PropTypes.object,
-  // eslint-disable-next-line react/forbid-prop-types
-  jobsState: PropTypes.object,
   nonce: PropTypes.string,
   reactAppString: PropTypes.string,
   // eslint-disable-next-line react/forbid-prop-types
@@ -173,7 +152,6 @@ ServerHTML.propTypes = {
 }
 
 ServerHTML.defaultProps = {
-  asyncComponentsState: undefined,
   helmet: undefined,
   nonce: undefined,
   reactAppString: undefined,
