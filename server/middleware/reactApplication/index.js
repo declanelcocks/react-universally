@@ -5,12 +5,14 @@ import {
   renderToStaticMarkup,
   renderToNodeStream,
 } from 'react-dom/server'
-import { StaticRouter } from 'react-router-dom'
+import { StaticRouter, matchPath } from 'react-router-dom'
+import { matchRoutes } from 'react-router-config'
 import { ServerStyleSheet, ThemeProvider } from 'styled-components'
 import { Provider } from 'react-redux'
 import configureStore from '../../../shared/redux/configureStore'
 
 import config from '../../../config'
+import routes from '../../../shared/components/routes'
 import App from '../../../shared/components/App'
 import theme from '../../../shared/components/theme'
 import { log } from '../../../shared/utils/logging'
@@ -54,55 +56,63 @@ export default function reactApplicationMiddleware(request, response) {
 
   // Create the redux store.
   const store = configureStore()
+  const branch = matchRoutes(routes, request.url)
+  const promises = branch.map(({ route, match }) => {
+    const { component: { loadData } } = route
 
-  // Declare our React application.
-  const app = (
-    <StaticRouter location={request.url} context={reactRouterContext}>
-      <Provider store={store}>
-        <ThemeProvider theme={theme}>
-          <App />
-        </ThemeProvider>
-      </Provider>
-    </StaticRouter>
-  )
+    return loadData ? loadData(match, store) : Promise.resolve(null)
+  })
 
-  const appString = renderToString(sheet.collectStyles(app))
-  const styleElement = sheet.getStyleElement()
-  // Generate the html response.
-  const html = renderToNodeStream(
-    <ServerHTML
-      reactAppString={appString}
-      styleElement={styleElement}
-      nonce={nonce}
-      helmet={Helmet.rewind()}
-      storeState={store.getState()}
-      routerState={reactRouterContext}
-    />,
-  )
+  Promise.all(promises).then(() => {
+    // Declare our React application.
+    const app = (
+      <StaticRouter location={request.url} context={reactRouterContext}>
+        <Provider store={store}>
+          <ThemeProvider theme={theme}>
+            <App />
+          </ThemeProvider>
+        </Provider>
+      </StaticRouter>
+    )
 
-  switch (reactRouterContext.status) {
-    case 301:
-    case 302:
-      // Check if the router context contains a redirect, if so we need to set
-      // the specific status and redirect header and end the response.
-      response.status(reactRouterContext.status)
-      response.location(reactRouterContext.url)
-      response.end()
-      break
-    case 404:
-      // If the renderResult contains a "missed" match then we set a 404 code.
-      // Our App component will handle the rendering of an Error404 view.
-      response.status(reactRouterContext.status)
-      response.type('html')
-      response.write('<!doctype html>')
-      html.pipe(response)
-      break
-    default:
-      // Otherwise everything is all good and we send a 200 OK status.
-      response.status(200)
-      response.type('html')
-      response.setHeader('Cache-Control', 'no-cache')
-      response.write('<!doctype html>')
-      html.pipe(response)
-  }
+    const appString = renderToString(sheet.collectStyles(app))
+    const styleElement = sheet.getStyleElement()
+    // Generate the html response.
+    const html = renderToNodeStream(
+      <ServerHTML
+        reactAppString={appString}
+        styleElement={styleElement}
+        nonce={nonce}
+        helmet={Helmet.rewind()}
+        storeState={store.getState()}
+        routerState={reactRouterContext}
+      />,
+    )
+
+    switch (reactRouterContext.status) {
+      case 301:
+      case 302:
+        // Check if the router context contains a redirect, if so we need to set
+        // the specific status and redirect header and end the response.
+        response.status(reactRouterContext.status)
+        response.location(reactRouterContext.url)
+        response.end()
+        break
+      case 404:
+        // If the renderResult contains a "missed" match then we set a 404 code.
+        // Our App component will handle the rendering of an Error404 view.
+        response.status(reactRouterContext.status)
+        response.type('html')
+        response.write('<!doctype html>')
+        html.pipe(response)
+        break
+      default:
+        // Otherwise everything is all good and we send a 200 OK status.
+        response.status(200)
+        response.type('html')
+        response.setHeader('Cache-Control', 'no-cache')
+        response.write('<!doctype html>')
+        html.pipe(response)
+    }
+  })
 }
