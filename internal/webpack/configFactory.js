@@ -409,6 +409,7 @@ export default function webpackConfigFactory(buildOptions) {
                   // skip it when reconciling.
                   ifProd('transform-react-constant-elements'),
                   'transform-class-properties',
+                  'syntax-dynamic-import',
                   [
                     'babel-plugin-styled-components',
                     {

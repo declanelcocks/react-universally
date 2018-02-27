@@ -13,6 +13,8 @@ import './polyfills'
 import configureStore from '../shared/redux/configureStore'
 import theme from '../shared/components/theme'
 import App from '../shared/components/App'
+import routes from '../shared/components/routes'
+import ensureReady from '../shared/components/routes/ensureReady'
 
 // Observe loading of our custom font
 const latoObserver = new FontFaceObserver('Lato', {})
@@ -62,8 +64,12 @@ function renderApp(App) {
   hydrate(app, container)
 }
 
+ensureReady(routes, window.location.pathname).then(() => {
+  renderApp(App)
+})
+
 // Execute the first render of our app.
-renderApp(App)
+// renderApp(App)
 
 // This registers our service worker for asset caching and offline support.
 // Keep this as the last item, just in case the code execution failed (thanks
