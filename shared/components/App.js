@@ -1,8 +1,6 @@
 import 'normalize.css/normalize.css'
 
 import React from 'react'
-import Switch from 'react-router-dom/Switch'
-import Route from 'react-router-dom/Route'
 import { renderRoutes } from 'react-router-config'
 import Helmet from 'react-helmet'
 

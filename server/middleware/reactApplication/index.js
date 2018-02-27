@@ -5,14 +5,14 @@ import {
   renderToStaticMarkup,
   renderToNodeStream,
 } from 'react-dom/server'
-import { StaticRouter, matchPath } from 'react-router-dom'
-import { matchRoutes } from 'react-router-config'
+import { StaticRouter } from 'react-router-dom'
 import { ServerStyleSheet, ThemeProvider } from 'styled-components'
 import { Provider } from 'react-redux'
 import configureStore from '../../../shared/redux/configureStore'
 
 import config from '../../../config'
 import routes from '../../../shared/components/routes'
+import ensureReady from '../../../shared/components/routes/ensureReady'
 import App from '../../../shared/components/App'
 import theme from '../../../shared/components/theme'
 import { log } from '../../../shared/utils/logging'
@@ -56,15 +56,8 @@ export default function reactApplicationMiddleware(request, response) {
 
   // Create the redux store.
   const store = configureStore()
-  const branch = matchRoutes(routes, request.url)
-  const promises = branch.map(({ route, match }) => {
-    const { component: { loadData } } = route
 
-    return loadData ? loadData(match, store) : Promise.resolve(null)
-  })
-
-  Promise.all(promises).then(() => {
-    // Declare our React application.
+  ensureReady(routes, request.url, store).then(() => {
     const app = (
       <StaticRouter location={request.url} context={reactRouterContext}>
         <Provider store={store}>
