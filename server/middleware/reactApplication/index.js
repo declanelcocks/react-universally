@@ -6,13 +6,7 @@ import {
   renderToNodeStream,
 } from 'react-dom/server'
 import { StaticRouter } from 'react-router-dom'
-import {
-  AsyncComponentProvider,
-  createAsyncContext,
-} from 'react-async-component'
 import { ServerStyleSheet, ThemeProvider } from 'styled-components'
-import { JobProvider, createJobContext } from 'react-jobs'
-import asyncBootstrapper from 'react-async-bootstrapper'
 import { Provider } from 'react-redux'
 import configureStore from '../../../shared/redux/configureStore'
 
@@ -54,78 +48,61 @@ export default function reactApplicationMiddleware(request, response) {
     return
   }
 
-  // Create a context for our AsyncComponentProvider.
-  const asyncComponentsContext = createAsyncContext()
-
   // Create a context for <StaticRouter>, which will allow us to
   // query for the results of the render.
   const reactRouterContext = {}
-
-  // Create the job context for our provider, this grants
-  // us the ability to track the resolved jobs to send back to the client.
-  const jobContext = createJobContext()
 
   // Create the redux store.
   const store = configureStore()
 
   // Declare our React application.
   const app = (
-    <AsyncComponentProvider asyncContext={asyncComponentsContext}>
-      <JobProvider jobContext={jobContext}>
-        <StaticRouter location={request.url} context={reactRouterContext}>
-          <Provider store={store}>
-            <ThemeProvider theme={theme}>
-              <App />
-            </ThemeProvider>
-          </Provider>
-        </StaticRouter>
-      </JobProvider>
-    </AsyncComponentProvider>
+    <StaticRouter location={request.url} context={reactRouterContext}>
+      <Provider store={store}>
+        <ThemeProvider theme={theme}>
+          <App />
+        </ThemeProvider>
+      </Provider>
+    </StaticRouter>
   )
 
-  // Pass our app into the react-async-component helper so that any async
-  // components are resolved for the render.
-  asyncBootstrapper(app).then(() => {
-    const appString = renderToString(sheet.collectStyles(app))
-    const styleElement = sheet.getStyleElement()
-    // Generate the html response.
-    const html = renderToNodeStream(
-      <ServerHTML
-        reactAppString={appString}
-        styleElement={styleElement}
-        nonce={nonce}
-        helmet={Helmet.rewind()}
-        storeState={store.getState()}
-        routerState={reactRouterContext}
-        jobsState={jobContext.getState()}
-        asyncComponentsState={asyncComponentsContext.getState()}
-      />,
-    )
+  const appString = renderToString(sheet.collectStyles(app))
+  const styleElement = sheet.getStyleElement()
+  // Generate the html response.
+  const html = renderToNodeStream(
+    <ServerHTML
+      reactAppString={appString}
+      styleElement={styleElement}
+      nonce={nonce}
+      helmet={Helmet.rewind()}
+      storeState={store.getState()}
+      routerState={reactRouterContext}
+    />,
+  )
 
-    switch (reactRouterContext.status) {
-      case 301:
-      case 302:
-        // Check if the router context contains a redirect, if so we need to set
-        // the specific status and redirect header and end the response.
-        response.status(reactRouterContext.status)
-        response.location(reactRouterContext.url)
-        response.end()
-        break
-      case 404:
-        // If the renderResult contains a "missed" match then we set a 404 code.
-        // Our App component will handle the rendering of an Error404 view.
-        response.status(reactRouterContext.status)
-        response.type('html')
-        response.write('<!doctype html>')
-        html.pipe(response)
-        break
-      default:
-        // Otherwise everything is all good and we send a 200 OK status.
-        response.status(200)
-        response.type('html')
-        response.setHeader('Cache-Control', 'no-cache')
-        response.write('<!doctype html>')
-        html.pipe(response)
-    }
-  })
+  switch (reactRouterContext.status) {
+    case 301:
+    case 302:
+      // Check if the router context contains a redirect, if so we need to set
+      // the specific status and redirect header and end the response.
+      response.status(reactRouterContext.status)
+      response.location(reactRouterContext.url)
+      response.end()
+      break
+    case 404:
+      // If the renderResult contains a "missed" match then we set a 404 code.
+      // Our App component will handle the rendering of an Error404 view.
+      response.status(reactRouterContext.status)
+      response.type('html')
+      response.write('<!doctype html>')
+      html.pipe(response)
+      break
+    default:
+      // Otherwise everything is all good and we send a 200 OK status.
+      response.status(200)
+      response.type('html')
+      response.setHeader('Cache-Control', 'no-cache')
+      response.write('<!doctype html>')
+      html.pipe(response)
+  }
 }

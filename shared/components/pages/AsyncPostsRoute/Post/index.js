@@ -1,7 +1,3 @@
-import { asyncComponent } from 'react-async-component'
+import PostComponent from './Post'
 
-export default asyncComponent({
-  resolve: () => System.import('./Post'),
-  serverMode: 'boundary',
-  name: 'Post',
-})
+export default PostComponent
