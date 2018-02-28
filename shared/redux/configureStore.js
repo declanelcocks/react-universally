@@ -1,9 +1,10 @@
-import { createStore, applyMiddleware, compose } from 'redux'
+import { createStore, applyMiddleware, compose, combineReducers } from 'redux'
 import thunk from 'redux-thunk'
 import apiService from '../services/api'
 import reducer from './reducers'
+import reducerRegistry from './reducerRegistry'
 
-function configureStore(initialState) {
+function configureStore(initialState = {}) {
   const enhancers = compose(
     // Middleware store enhancer.
     applyMiddleware(
@@ -26,17 +27,34 @@ function configureStore(initialState) {
         f => f,
   )
 
-  const store = initialState
-    ? createStore(reducer, initialState, enhancers)
-    : createStore(reducer, enhancers)
+  const combine = reducers => {
+    const reducerNames = Object.keys(reducers)
+    Object.keys(initialState).forEach(item => {
+      if (reducerNames.indexOf(item) === -1) {
+        reducers[item] = (state = null) => state
+      }
+    })
+    return combineReducers(reducers)
+  }
+
+  const store = createStore(
+    combine(reducerRegistry.getReducers()),
+    initialState,
+    enhancers,
+  )
+
+  reducerRegistry.setChangeListener(reducers => {
+    store.replaceReducer(combine(reducers))
+  })
 
   if (process.env.NODE_ENV === 'development' && module.hot) {
+    if (typeof window !== 'undefined')
+      window.__REACT_HOT_LOADER__.warnings = false
     // Enable Webpack hot module replacement for reducers. This is so that we
     // don't lose all of our current application state during hot reloading.
-    module.hot.accept('./reducers', () => {
-      const nextRootReducer = require('./reducers').default // eslint-disable-line global-require
-
-      store.replaceReducer(nextRootReducer)
+    module.hot.accept('./reducers', async () => {
+      await require('./reducers').default
+      store.replaceReducer(combine(reducerRegistry.getReducers()))
     })
   }
 

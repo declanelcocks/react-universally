@@ -1,3 +1,5 @@
+import reducerRegistry from '../reducerRegistry'
+
 const initialState = {
   all: [],
   byId: {},
@@ -22,5 +24,7 @@ function reducer(state = initialState, { type, payload }) {
       return state
   }
 }
+
+reducerRegistry.register('posts', reducer)
 
 export default reducer
