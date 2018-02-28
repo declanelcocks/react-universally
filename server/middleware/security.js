@@ -65,6 +65,10 @@ if (process.env.BUILD_FLAG_IS_DEV === 'true') {
       `${config('host')}:${config('clientDevServerPort')}`,
     )
   })
+
+  // When using dynamic imports, webpack will run the chunk using eval()
+  // so we need to allow this when in development mode
+  cspConfig.directives.scriptSrc.push("'unsafe-eval'")
 }
 
 // Attach a unique "nonce" to every response.  This allows use to declare

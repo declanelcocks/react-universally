@@ -4,8 +4,10 @@ import convertCustomRouteConfig from './convertCustomRouteConfig'
 const postRoute = {
   path: parentPath => `${parentPath}/:id`,
   component: generateAsyncRoute({
-    loader: () =>
-      import(/* webpackChunkName: "post" */ '../pages/AsyncPostsRoute/Post'),
+    loader: async () => {
+      await import(/* webpackChunkName: "post" */ '../../redux/posts/reducer')
+      return import(/* webpackChunkName: "post" */ '../pages/AsyncPostsRoute/Post')
+    },
   }),
 }
 
