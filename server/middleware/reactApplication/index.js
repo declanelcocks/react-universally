@@ -12,7 +12,7 @@ import configureStore from '../../../shared/redux/configureStore'
 
 import config from '../../../config'
 import routes from '../../../shared/components/routes'
-import ensureReady from '../../../shared/components/routes/ensureReady'
+import { ensureReady } from '../../../shared/components/utils/routes'
 import App from '../../../shared/components/App'
 import theme from '../../../shared/components/theme'
 import { log } from '../../../shared/utils/logging'

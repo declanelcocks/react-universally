@@ -14,7 +14,7 @@ import configureStore from '../shared/redux/configureStore'
 import theme from '../shared/components/theme'
 import App from '../shared/components/App'
 import routes from '../shared/components/routes'
-import ensureReady from '../shared/components/routes/ensureReady'
+import { ensureReady } from '../shared/components/utils/routes'
 
 // Observe loading of our custom font
 const latoObserver = new FontFaceObserver('Lato', {})

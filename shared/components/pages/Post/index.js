@@ -4,8 +4,8 @@ import { compose, setStatic, lifecycle } from 'recompose'
 import { connect } from 'react-redux'
 import Helmet from 'react-helmet'
 
-import * as PostActions from '../../../../redux/posts/actions'
-import { getPostById } from '../../../../redux/posts/selectors'
+import * as PostActions from '../../../redux/posts/actions'
+import { getPostById } from '../../../redux/posts/selectors'
 
 export function Post({ post }) {
   if (!post) {

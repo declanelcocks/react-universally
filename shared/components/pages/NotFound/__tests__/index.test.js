@@ -1,12 +1,12 @@
 import React from 'react'
 import { shallow } from 'enzyme'
 
-import Error404 from '../index'
+import NotFound from '../index'
 
-describe('<Error404 />', () => {
+describe('<NotFound />', () => {
   test('renders', () => {
     const staticContext = {}
-    const wrapper = shallow(<Error404 staticContext={staticContext} />)
+    const wrapper = shallow(<NotFound staticContext={staticContext} />)
     expect(wrapper).toMatchSnapshot()
     expect(staticContext.missed).toBeTruthy()
   })
