@@ -1,11 +1,11 @@
 import React from 'react'
 import { shallow } from 'enzyme'
 
-import AboutRoute from '../AboutRoute'
+import Home from '../'
 
-describe('<AboutRoute />', () => {
+describe('<Home />', () => {
   test('renders', () => {
-    const wrapper = shallow(<AboutRoute />)
+    const wrapper = shallow(<Home />)
     expect(wrapper).toMatchSnapshot()
   })
 })

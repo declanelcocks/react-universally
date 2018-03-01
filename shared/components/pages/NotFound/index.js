@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-class Error404 extends Component {
+class NotFound extends Component {
   componentWillMount() {
     const { staticContext } = this.props
     if (staticContext) {
@@ -14,13 +14,13 @@ class Error404 extends Component {
   }
 }
 
-Error404.propTypes = {
+NotFound.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   staticContext: PropTypes.object,
 }
 
-Error404.defaultProps = {
+NotFound.defaultProps = {
   staticContext: {},
 }
 
-export default Error404
+export default NotFound
