@@ -1,5 +1,5 @@
 import React from 'react'
-import { shallow } from 'enzyme'
+import { shallow, mount } from 'enzyme'
 
 import Field from '.'
 
@@ -9,6 +9,8 @@ const mockProps = {
 }
 
 const wrap = props => shallow(<Field name="name" {...mockProps} {...props} />)
+const wrapWithMount = props =>
+  mount(<Field name="name" {...mockProps} {...props} />)
 
 it('renders input props when passed in', () => {
   const wrapper = wrap({ id: 'foo' })
@@ -21,37 +23,23 @@ it('renders name', () => {
 })
 
 it('renders label when passed in', () => {
-  const wrapper = wrap({ label: 'foo label' })
+  const wrapper = wrapWithMount({ label: 'foo label' })
   expect(wrapper.contains('foo label')).toBe(true)
 })
 
 it('does not render error when passed in without invalid', () => {
-  const wrapper = wrap({ meta: { error: 'foo error' } })
+  const wrapper = wrapWithMount({ meta: { error: 'foo error' } })
   expect(wrapper.contains('foo error')).toBe(false)
 })
 
 it('does not render error when passed in without touched', () => {
-  const wrapper = wrap({ meta: { error: 'foo error', invalid: true } })
+  const wrapper = wrapWithMount({ meta: { error: 'foo error', invalid: true } })
   expect(wrapper.contains('foo error')).toBe(false)
 })
 
 it('renders error when passed in along with invalid', () => {
-  const wrapper = wrap({
+  const wrapper = wrapWithMount({
     meta: { error: 'foo error', touched: true, invalid: true },
   })
   expect(wrapper.contains('foo error')).toBe(true)
-})
-
-it('renders label after input when type is checkbox', () => {
-  const wrapper = wrap({ type: 'checkbox', label: 'foo label' })
-
-  expect(wrapper.childAt(0).is('Input')).toBe(true)
-  expect(wrapper.childAt(1).is('Label')).toBe(true)
-})
-
-it('renders label after input when type is radio', () => {
-  const wrapper = wrap({ type: 'radio', label: 'foo label' })
-
-  expect(wrapper.childAt(0).is('Input')).toBe(true)
-  expect(wrapper.childAt(1).is('Label')).toBe(true)
 })

@@ -6,15 +6,15 @@ import { font, palette } from 'styled-theme'
 import { ifProp } from 'styled-tools'
 
 const backgroundColor = ({ transparent, disabled }) =>
-  transparent ? 'transparent' : palette(disabled ? 2 : 1)
+  transparent ? 'transparent' : palette(disabled ? 4 : 3)
 
 const foregroundColor = ({ transparent, disabled }) =>
-  transparent ? palette(disabled ? 2 : 1) : palette('grayscale', 0, true)
+  transparent ? palette(disabled ? 4 : 3) : palette('grayscale', 0, true)
 
 const hoverBackgroundColor = ({ disabled, transparent }) =>
-  !disabled && !transparent && palette(0)
+  !disabled && !transparent && palette(2)
 const hoverForegroundColor = ({ disabled, transparent }) =>
-  !disabled && transparent && palette(0)
+  !disabled && transparent && palette(2)
 
 const styles = css`
   display: block;

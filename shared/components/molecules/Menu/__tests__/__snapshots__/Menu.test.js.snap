@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Home /> renders 1`] = `
+<Menu__MenuWrapper>
+  <Menu__LogoLink
+    to="/"
+  >
+    <Logo
+      size="small"
+    />
+  </Menu__LogoLink>
+  <Menu__List>
+    <li>
+      <Link
+        palette="primary"
+        to="/"
+      >
+        Home
+      </Link>
+    </li>
+    <li>
+      <Link
+        palette="primary"
+        to="/counter"
+      >
+        Counter
+      </Link>
+    </li>
+    <li>
+      <Link
+        palette="primary"
+        to="/posts"
+      >
+        Posts
+      </Link>
+    </li>
+    <li>
+      <Link
+        palette="primary"
+        to="/about"
+      >
+        About
+      </Link>
+    </li>
+  </Menu__List>
+</Menu__MenuWrapper>
+`;

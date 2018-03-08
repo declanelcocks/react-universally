@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import classnames from 'classnames'
+import { compose, withState } from 'recompose'
 
 import Block from '../../atoms/Block'
 import Label from '../../atoms/Label'
@@ -24,15 +25,29 @@ const Error = styled(Block)`
   min-height: 1.5rem;
 `
 
-const renderInput = (props, invalid) => {
+const renderInput = ({ isDirty, setIsDirty, ...props }, invalid) => {
   const { type, input } = props
 
   switch (type) {
     case 'select': {
-      return <Select invalid={invalid} {...props} />
+      return (
+        <Select
+          invalid={invalid}
+          isDirty={isDirty}
+          setIsDirty={setIsDirty}
+          {...props}
+        />
+      )
     }
     case 'multi-select': {
-      return <Select invalid={invalid} {...props} />
+      return (
+        <Select
+          invalid={invalid}
+          isDirty={isDirty}
+          setIsDirty={setIsDirty}
+          {...props}
+        />
+      )
     }
     default: {
       return <Input invalid={invalid} {...input} {...props} />
@@ -41,7 +56,7 @@ const renderInput = (props, invalid) => {
 }
 
 const Field = props => {
-  const { type, label, input, meta } = props
+  const { type, label, input, meta, isDirty } = props
   const renderInputFirst = type === 'checkbox' || type === 'radio'
 
   let invalid = meta.touched && !!meta.error
@@ -50,7 +65,7 @@ const Field = props => {
   // it never sets this back to `false`, so we'll treat it as react-select's
   // `touched` value
   if (type === 'select' || type === 'multi-select') {
-    invalid = meta.active && !!meta.error
+    invalid = !!meta.error
   }
 
   return (
@@ -69,7 +84,9 @@ const Field = props => {
       {!renderInputFirst && renderInput(props, invalid)}
 
       <Error id={`${input.name}Error`} role="alert" palette="danger">
-        {invalid && meta.error && <span>{meta.error}</span>}
+        {type === 'select' || type === 'multi-select'
+          ? invalid && meta.error && isDirty && <span>{meta.error}</span>
+          : invalid && meta.error && <span>{meta.error}</span>}
       </Error>
     </Wrapper>
   )
@@ -103,10 +120,15 @@ Field.propTypes = {
     PropTypes.array.isRequired,
     PropTypes.array,
   ),
+  // Used by select/multi-select to manually set dirty after a
+  // blur event. `react-select` doesn't handle it well enough to
+  // handle showing our error messages and setting the invalid state
+  isDirty: PropTypes.bool,
+  setIsDirty: PropTypes.func,
 }
 
 Field.defaultProps = {
   type: 'text',
 }
 
-export default Field
+export default compose(withState('isDirty', 'setIsDirty', false))(Field)
