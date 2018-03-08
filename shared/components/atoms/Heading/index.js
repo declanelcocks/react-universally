@@ -10,7 +10,7 @@ import { switchProp, prop } from 'styled-tools'
 
 const styles = css`
   font-family: ${font('primary')};
-  color: ${palette({ grayscale: 0 }, 1)};
+  color: ${palette({ grayscale: 0 }, 3)};
   font-weight: 400;
   font-size: ${switchProp(prop('level'), {
     1: '3.375rem',

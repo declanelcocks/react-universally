@@ -4,14 +4,12 @@ import { font, palette } from 'styled-theme'
 
 const Label = styled.label`
   font-family: ${font('primary')};
-  color: ${({ palette: paletteName }) =>
-    palette(paletteName, paletteName === 'grayscale' ? 3 : 1)};
+  color: ${palette(3)};
   font-size: 0.8125rem; /* 13px */
   line-height: 1rem;
 `
 
 Label.propTypes = {
-  reverse: PropTypes.bool,
   palette: PropTypes.string,
 }
 

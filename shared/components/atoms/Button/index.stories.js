@@ -11,13 +11,6 @@ storiesOf('Button', module)
       <Button>Hello</Button>
     </div>
   ))
-  .add('reverse', () => (
-    <div>
-      <Button reverse>Hello</Button>
-      <Button reverse>Hello</Button>
-      <Button reverse>Hello</Button>
-    </div>
-  ))
   .add('another palette', () => (
     <div>
       <Button palette="secondary">Hello</Button>

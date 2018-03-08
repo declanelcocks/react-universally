@@ -6,7 +6,7 @@ import { ifProp } from 'styled-tools'
 const Block = styled.div`
   font-family: ${font('primary')};
   background-color: ${ifProp('opaque', palette(0, true), 'transparent')};
-  color: ${palette({ grayscale: 0 }, 1)};
+  color: ${palette({ grayscale: 0 }, 3)};
   ${ifProp(
     'inline',
     css`

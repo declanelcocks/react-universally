@@ -9,7 +9,7 @@ const Badge = styled.div`
   line-height: 1.5rem;
   padding: 0 0.5rem;
   color: ${palette('grayscale', 0, true)};
-  background-color: ${palette(1)};
+  background-color: ${palette(3)};
   border-radius: 0.25rem;
 `
 

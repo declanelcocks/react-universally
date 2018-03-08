@@ -6,7 +6,7 @@ import { ifProp } from 'styled-tools'
 
 const Wrapper = styled.span`
   display: inline-block;
-  color: ${ifProp('palette', palette({ grayscale: 0 }, 1), 'currentcolor')};
+  color: ${ifProp('palette', palette({ grayscale: 0 }, 3), 'currentcolor')};
   width: 1.25rem;
   height: 1.25rem;
   margin: 0.125rem;

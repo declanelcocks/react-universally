@@ -14,10 +14,20 @@ const Wrapper = styled.div`
     padding-right: 0rem;
     width: 2.5rem;
     height: 2rem;
-  }
 
-  > *:not(:last-child) {
-    border-right-color: ${palette('primary', 3)};
+    &:not(:last-child) {
+      border-right-color: ${palette('primary', 5)};
+    }
+
+    &:first-child {
+      border-top-left-radius: 0.2rem;
+      border-bottom-left-radius: 0.2rem;
+    }
+
+    &:last-child {
+      border-top-right-radius: 0.2rem;
+      border-bottom-right-radius: 0.2rem;
+    }
   }
 `
 

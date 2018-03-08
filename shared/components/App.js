@@ -8,7 +8,7 @@ import config from '../../config'
 import './globalStyles'
 
 import routes from './routes'
-import Header from './molecules/Header'
+import Header from './organisms/Header'
 
 function App() {
   return (

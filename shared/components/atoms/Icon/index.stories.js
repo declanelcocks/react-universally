@@ -12,5 +12,11 @@ storiesOf('Icon', module)
       <Icon icon="github" />
     </div>
   ))
-  .add('palette', () => <Icon icon="close" palette="primary" />)
-  .add('palette reverse', () => <Icon icon="close" palette="primary" reverse />)
+  .add('palette', () => (
+    <div>
+      <Icon icon="close" palette="primary" />
+      <Icon icon="copy" palette="primary" />
+      <Icon icon="docs" palette="primary" />
+      <Icon icon="github" palette="primary" />
+    </div>
+  ))
