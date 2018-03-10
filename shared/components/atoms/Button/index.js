@@ -6,10 +6,10 @@ import { font, palette } from 'styled-theme'
 import { ifProp } from 'styled-tools'
 
 const backgroundColor = ({ transparent, disabled }) =>
-  transparent ? 'transparent' : palette(disabled ? 4 : 3)
+  transparent ? 'transparent' : palette(disabled ? 5 : 3)
 
 const foregroundColor = ({ transparent, disabled }) =>
-  transparent ? palette(disabled ? 4 : 3) : palette('grayscale', 0, true)
+  transparent ? palette(disabled ? 5 : 3) : palette('grayscale', 0, true)
 
 const hoverBackgroundColor = ({ disabled, transparent }) =>
   !disabled && !transparent && palette(2)
@@ -39,14 +39,15 @@ const styles = css`
   appearance: none;
   box-sizing: border-box;
   pointer-events: ${ifProp('disabled', 'none', 'auto')};
-  transition: background-color 250ms ease-out, color 250ms ease-out,
-    border-color 250ms ease-out;
+  transition: all 0.15s ease;
   background-color: ${backgroundColor};
   color: ${foregroundColor};
 
   &:hover,
   &:focus,
   &:active {
+    transform: translateY(-1px);
+    box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
     background-color: ${hoverBackgroundColor};
     color: ${hoverForegroundColor};
   }
