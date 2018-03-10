@@ -9,11 +9,11 @@ const styles = css`
   text-decoration: none;
   font-weight: 500;
   color: ${palette(3)};
-  transition: all 0.3s ease;
+  transition: all 0.1s ease;
 
   &:hover,
   &:focus {
-    color: ${palette(1)};
+    color: ${palette(0)};
   }
 `
 

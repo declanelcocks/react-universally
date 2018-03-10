@@ -28,7 +28,7 @@ const styles = css`
   color: ${palette('grayscale', 0)};
   background-color: ${palette('grayscale', 0, true)};
   border: 0.0625rem solid
-    ${ifProp('invalid', palette('danger', 3), palette('grayscale', 3))};
+    ${ifProp('invalid', palette('danger', 3), palette('grayscale', 4))};
   border-radius: 2px;
   outline: none;
 
@@ -43,7 +43,7 @@ const styles = css`
   }
 
   &::placeholder {
-    color: ${palette('grayscale', 3)};
+    color: ${palette('grayscale', 4)};
   }
 `
 

@@ -19,7 +19,7 @@ const StyledReactSelect = styled(ReactSelect)`
       ${ifProp(
         ['invalid', 'isDirty'],
         palette('danger', 3),
-        palette('grayscale', 3),
+        palette('grayscale', 4),
       )} !important;
   }
 
@@ -28,7 +28,7 @@ const StyledReactSelect = styled(ReactSelect)`
     border-color: ${ifProp(
       ['invalid', 'isDirty'],
       palette('danger', 3),
-      palette('grayscale', 3),
+      palette('grayscale', 4),
     )} !important;
   }
 
@@ -55,7 +55,7 @@ const StyledReactSelect = styled(ReactSelect)`
   }
 
   .Select-placeholder {
-    color: ${palette('grayscale', 3)};
+    color: ${palette('grayscale', 4)};
     line-height: 2.375rem;
     padding: 0 0.5rem;
   }
@@ -65,12 +65,12 @@ const StyledReactSelect = styled(ReactSelect)`
       ${ifProp(
         ['invalid', 'isDirty'],
         palette('danger', 3),
-        palette('grayscale', 3),
+        palette('grayscale', 4),
       )};
-    border-top-color: ${palette('grayscale', 4)};
+    border-top-color: ${palette('grayscale', 5)};
 
     .Select-option.is-focused {
-      background-color: ${palette('primary', 6)};
+      background-color: ${palette('primary', 7)};
     }
   }
 `
