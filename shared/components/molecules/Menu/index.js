@@ -1,8 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
+import { palette } from 'styled-theme'
 
-import Logo from '../../atoms/Logo'
+import Icon from '../../atoms/Icon'
 import Link from '../../atoms/Link'
+import Logo from '../../atoms/Logo'
 
 const MenuWrapper = styled.div`
   display: flex;
@@ -12,16 +14,42 @@ const MenuWrapper = styled.div`
 const List = styled.ul`
   flex: 1;
   margin: 0.75rem 0;
-  padding: 0.75rem;
+  padding: 0 0.75rem;
 
   li {
     display: inline-flex;
+    margin: 0;
+
+    a {
+      position: relative;
+      padding: 0.75rem 0.5rem;
+
+      &:before {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        background-color: transparent;
+        transition: all 0.1s ease;
+      }
+
+      &:focus,
+      &:hover {
+        &:before {
+          background-color: ${palette('grayscale', 0)};
+        }
+      }
+    }
   }
 `
 
 const LogoLink = styled(Link)`
   display: flex;
 `
+
+const MenuLink = props => <Link palette="grayscale" {...props} />
 
 function Menu() {
   return (
@@ -32,18 +60,22 @@ function Menu() {
 
       <List>
         <li>
-          <Link to="/">Home</Link>
+          <MenuLink to="/">Home</MenuLink>
         </li>
         <li>
-          <Link to="/counter">Counter</Link>
+          <MenuLink to="/counter">Counter</MenuLink>
         </li>
         <li>
-          <Link to="/posts">Posts</Link>
+          <MenuLink to="/posts">Posts</MenuLink>
         </li>
         <li>
-          <Link to="/about">About</Link>
+          <MenuLink to="/about">About</MenuLink>
         </li>
       </List>
+
+      <MenuLink to="/cart">
+        <Icon icon="cart" />
+      </MenuLink>
     </MenuWrapper>
   )
 }

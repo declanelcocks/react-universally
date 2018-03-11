@@ -2,13 +2,13 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled, { css } from 'styled-components'
 import { font, palette } from 'styled-theme'
+import { ifProp } from 'styled-tools'
 import NavLink from 'react-router-dom/NavLink'
 
 const styles = css`
   font-family: ${font('primary')};
   text-decoration: none;
-  font-weight: 500;
-  color: ${palette(3)};
+  color: ${ifProp({ palette: 'grayscale' }, palette(2), palette(3))};
   transition: all 0.1s ease;
 
   &:hover,
