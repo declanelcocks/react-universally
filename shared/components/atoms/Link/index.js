@@ -8,7 +8,7 @@ import NavLink from 'react-router-dom/NavLink'
 const styles = css`
   font-family: ${font('primary')};
   text-decoration: none;
-  color: ${ifProp({ palette: 'grayscale' }, palette(2), palette(3))};
+  color: ${ifProp({ palette: 'grayscale' }, palette(0), palette(3))};
   transition: all 0.1s ease;
 
   &:hover,

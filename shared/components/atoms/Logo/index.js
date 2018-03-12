@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import styled, { css } from 'styled-components'
 import { ifProp } from 'styled-tools'
 
-import logo from './logo.png'
+import logo from './logo.svg'
 
 const Img = styled.img`
   padding: 0.5rem;
