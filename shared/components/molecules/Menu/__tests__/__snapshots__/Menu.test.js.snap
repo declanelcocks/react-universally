@@ -11,37 +11,40 @@ exports[`<Home /> renders 1`] = `
   </Menu__LogoLink>
   <Menu__List>
     <li>
-      <Link
-        palette="primary"
+      <MenuLink
         to="/"
       >
         Home
-      </Link>
+      </MenuLink>
     </li>
     <li>
-      <Link
-        palette="primary"
+      <MenuLink
         to="/counter"
       >
         Counter
-      </Link>
+      </MenuLink>
     </li>
     <li>
-      <Link
-        palette="primary"
+      <MenuLink
         to="/posts"
       >
         Posts
-      </Link>
+      </MenuLink>
     </li>
     <li>
-      <Link
-        palette="primary"
+      <MenuLink
         to="/about"
       >
         About
-      </Link>
+      </MenuLink>
     </li>
   </Menu__List>
+  <MenuLink
+    to="/cart"
+  >
+    <Icon
+      icon="cart"
+    />
+  </MenuLink>
 </Menu__MenuWrapper>
 `;

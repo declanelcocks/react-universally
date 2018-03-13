@@ -6,7 +6,7 @@ import { ifProp } from 'styled-tools'
 import logo from './logo.svg'
 
 const Img = styled.img`
-  padding: 0.5rem;
+  padding: 0.25rem;
   ${ifProp(
     { size: 'small' },
     css`
