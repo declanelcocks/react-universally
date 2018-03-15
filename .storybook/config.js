@@ -5,6 +5,8 @@ import { withConsole } from '@storybook/addon-console'
 import StoryRouter from 'storybook-router'
 import Wrapper from './Wrapper'
 
+import './style.css'
+
 const req = require.context('../shared/components', true, /.stories.js$/)
 
 function loadStories() {
