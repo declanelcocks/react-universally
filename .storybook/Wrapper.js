@@ -129,7 +129,7 @@ Wrapper.propTypes = {
 }
 
 const enhance = compose(
-  withState('showBaseline', 'setBaselineVisibility', true),
+  withState('showBaseline', 'setBaselineVisibility', false),
 )
 
 export default enhance(Wrapper)
