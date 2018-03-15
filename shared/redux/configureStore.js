@@ -49,13 +49,12 @@ function configureStore(initialState = {}) {
 
   if (process.env.NODE_ENV === 'development' && module.hot) {
     if (typeof window !== 'undefined')
-      window.__REACT_HOT_LOADER__.warnings = false
-    // Enable Webpack hot module replacement for reducers. This is so that we
-    // don't lose all of our current application state during hot reloading.
-    module.hot.accept('./reducers', async () => {
-      await require('./reducers').default
-      store.replaceReducer(combine(reducerRegistry.getReducers()))
-    })
+      // Enable Webpack hot module replacement for reducers. This is so that we
+      // don't lose all of our current application state during hot reloading.
+      module.hot.accept('./reducers', async () => {
+        await require('./reducers').default
+        store.replaceReducer(combine(reducerRegistry.getReducers()))
+      })
   }
 
   return store
