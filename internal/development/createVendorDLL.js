@@ -37,6 +37,8 @@ function createVendorDLL(bundleName, bundleConfig) {
 
   function webpackConfigFactory() {
     return {
+      // Force development mode as the dev server should only be ran while development
+      mode: 'development',
       // We only use this for development, so lets always include source maps.
       devtool: 'inline-source-map',
       entry: {
