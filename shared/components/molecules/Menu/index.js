@@ -15,6 +15,7 @@ const List = styled.ul`
   flex: 1;
   margin: 0.75rem 0;
   padding: 0 0.75rem;
+  text-align: left;
 
   li {
     display: inline-flex;

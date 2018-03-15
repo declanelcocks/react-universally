@@ -112,6 +112,11 @@ export default function webpackConfigFactory(buildOptions) {
       ),
       // The name format for any additional chunks produced for the bundle.
       chunkFilename: '[name]-[chunkhash].js',
+      // Webpack 4 will overwrite the index file path in assets.json with HMRs chunk
+      // path. The assets-plugin detects HMR chunks with a RegExp based on
+      // `config.output.hotUpdateChunkFilename`. In Webpack 4, this seems to be
+      // `undefined`.
+      hotUpdateChunkFilename: '[hash].hot-update.js',
       // When targetting node we will output our bundle as a commonjs2 module.
       libraryTarget: ifNode('commonjs2', 'var'),
       // This is the web path under which our webpack bundled client should
