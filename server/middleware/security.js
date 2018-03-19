@@ -3,19 +3,51 @@ import hpp from 'hpp'
 import helmet from 'helmet'
 import config from '../../config'
 
+/*
+ * Content Security Policy (CSP)
+ *
+ * - Cross-Site Scripting (XSS)
+ *    Malicious JS is put on the page, which can steal sensitive data or perform
+ *    malicious actions
+ * - XSS Filter
+ *    A unique kind of XSS where a script is placed into a URLs query parameters.
+ *    This script will then be ran by the browser. @see https://helmetjs.github.io/docs/xss-filter/
+ * - Clickjacking
+ *    This is where your website will run inside an iframe in order to run on top of some secret
+ *    content. This could mean that when you click a button, you're actually clicking something
+ *    underneath the iframe. @see https://helmetjs.github.io/docs/frameguard/
+ * - MIME Sniffing
+ *    Some browsers will try to "guess" the content type of the files. If an image was uploaded with a
+ *    .jpg extension, but its contents were actually HTML, then someone visiting that image could cause
+ *    the browser to "run" the HTML, which could also contain malicious JavaScript.
+ *    @see https://helmetjs.github.io/docs/dont-sniff-mimetype/
+ * - Put a tiny image on your site (tracking pixel)
+ *    Puts a tiny image on your site to gain an idea of how much traffic your site gets
+ * - Get a vulnerable plugin to run
+ *    Exploit its flaws while on your website
+ * -
+ *
+ * So, CSP?
+ * A CSP will define exactly where your site can download different types of resources from.
+ *
+ * What if I want to include a `<script>` tag?
+ * We can "sign" our scripts with a nonce tag which looks something like this:
+ * `<script nonce="nonce-614d9122-d5b0-4760-aecf-3a5d17cf0ac9">....</script>`
+ * This security middleware will generate a nonce and attach it to `response`, passing it onto the
+ * React middleware.
+ */
+
+// Default CSP config
 const cspConfig = {
   directives: {
     childSrc: ["'self'"],
     // Note: Setting this to stricter than * breaks the service worker. :(
-    // I can't figure out how to get around this, so if you know of a safer
-    // implementation that is kinder to service workers please let me know.
     connectSrc: ['*'], // ["'self'", 'ws:'],
     defaultSrc: ["'self'"],
     imgSrc: [
       "'self'",
       // If you use Base64 encoded images (i.e. inlined images), then you will
-      // need the following:
-      // 'data:',
+      // need `data:`,
     ],
     fontSrc: ["'self'", 'data:'],
     objectSrc: ["'self'"],
@@ -45,8 +77,10 @@ const cspConfig = {
   },
 }
 
-// Add any additional CSP from the static config.
+// Get our custom CSP config
 const cspExtensions = config('cspExtensions')
+
+// Combine our custom CSP config with the default CSP config above
 Object.keys(cspExtensions).forEach(key => {
   if (cspConfig.directives[key]) {
     cspConfig.directives[key] = cspConfig.directives[key].concat(
@@ -58,16 +92,18 @@ Object.keys(cspExtensions).forEach(key => {
 })
 
 if (process.env.BUILD_FLAG_IS_DEV === 'true') {
-  // When in development mode we need to add our secondary express server that
-  // is used to host our client bundle to our csp config.
+  // In development mode, we have a client bundle server running that is used
+  // to hos our bundle. Since that will be an "external" URL, we will also need
+  // to allow our app to load resources from it.
   Object.keys(cspConfig.directives).forEach(directive => {
     cspConfig.directives[directive].push(
       `${config('host')}:${config('clientDevServerPort')}`,
     )
   })
 
-  // When using dynamic imports, webpack will run the chunk using eval()
-  // so we need to allow this when in development mode
+  // When using dynamic imports (`import(...)`), webpack will inject the chunk using `eval()`.
+  // Webpack is used to run our development server, so that's why it's only needed in our
+  // development environment
   cspConfig.directives.scriptSrc.push("'unsafe-eval'")
 }
 
@@ -85,15 +121,14 @@ const securityMiddleware = [
 
   // Prevent HTTP Parameter pollution.
   // @see http://bit.ly/2f8q7Td
+  // `hpp()` will sanitize the HTTP parameters to ensure they are of correct type
+  // and catch any errors with the parameters without crashing the server
   hpp(),
 
-  // The xssFilter middleware sets the X-XSS-Protection header to prevent
-  // reflected XSS attacks.
-  // @see https://helmetjs.github.io/docs/xss-filter/
+  // Prevent XSS Filter attacks
   helmet.xssFilter(),
 
-  // Frameguard mitigates clickjacking attacks by setting the X-Frame-Options header.
-  // @see https://helmetjs.github.io/docs/frameguard/
+  // Prevent Clickjacking attacks
   helmet.frameguard('deny'),
 
   // Sets the X-Download-Options to prevent Internet Explorer from executing
@@ -101,32 +136,13 @@ const securityMiddleware = [
   // @see https://helmetjs.github.io/docs/ienoopen/
   helmet.ieNoOpen(),
 
-  // Don’t Sniff Mimetype middleware, noSniff, helps prevent browsers from trying
-  // to guess (“sniff”) the MIME type, which can have security implications. It
-  // does this by setting the X-Content-Type-Options header to nosniff.
-  // @see https://helmetjs.github.io/docs/dont-sniff-mimetype/
+  // Prevent MIME Sniffing attacks
   helmet.noSniff(),
 
-  // Content Security Policy
-  //
-  // If you are unfamiliar with CSPs then I highly recommend that you do some
-  // reading on the subject:
-  //  - https://content-security-policy.com/
-  //  - https://developers.google.com/web/fundamentals/security/csp/
-  //  - https://developer.mozilla.org/en/docs/Web/Security/CSP
-  //  - https://helmetjs.github.io/docs/csp/
-  //
-  // If you are relying on scripts/styles/assets from other servers (internal
-  // or external to your company) then you will need to explicitly configure
-  // the CSP below to allow for this.  For example you can see I have had to
-  // add the polyfill.io CDN in order to allow us to use the polyfill script.
-  // It can be a pain to manage these, but it's a really great habit to get
-  // in to.
-  //
-  // You may find CSPs annoying at first, but it is a great habit to build.
-  // The CSP configuration is an optional item for helmet, however you should
-  // not remove it without making a serious consideration that you do not
-  // require the added security.
+  // If we are relying on resources from other servers, then we will have to
+  // explicitly configure the CSP below to allow for this. For example, in our
+  // config, we've added the `polyfill.io` CDN to allow us to use the polyfill
+  // script.
   helmet.contentSecurityPolicy(cspConfig),
 ]
 
