@@ -1,11 +1,6 @@
 /**
- * Helper for resolving environment specific configuration files.
- *
- * It resolves .env files that are supported by the `dotenv` library.
- *
- * Please read the application configuration docs for more info.
+ * This helper resolves `.env` files that are supported by the `dotenv` library
  */
-
 import appRootDir from 'app-root-dir'
 import dotenv from 'dotenv'
 import fs from 'fs'
@@ -13,36 +8,29 @@ import path from 'path'
 
 import ifElse from '../../shared/utils/logic/ifElse'
 import removeNil from '../../shared/utils/arrays/removeNil'
-
 import { log } from '../../internal/utils'
-
-// PRIVATES
 
 function registerEnvFile() {
   const { DEPLOYMENT } = process.env
   const envFile = '.env'
 
-  // This is the order in which we will try to resolve an environment configuration
-  // file.
+  // Resolve the environment variables in order of priority
   const envFileResolutionOrder = removeNil([
-    // Is there an environment config file at the app root?
-    // This always takes preference.
-    // e.g. /projects/react-universally/.env
+    // Is there a `.env` file? This always takes preference.
     path.resolve(appRootDir.get(), envFile),
-    // Is there an environment config file at the app root for our target
-    // environment name?
-    // e.g. /projects/react-universally/.env.staging
+
+    // Is there a `.env` file for our target environment?
     ifElse(DEPLOYMENT)(
       path.resolve(appRootDir.get(), `${envFile}.${DEPLOYMENT}`),
     ),
   ])
 
-  // Find the first env file path match.
+  // Find the first `.env` match.
   const envFilePath = envFileResolutionOrder.find(filePath =>
     fs.existsSync(filePath),
   )
 
-  // If we found an env file match the register it.
+  // If we found a `.env` file, register it with `dotenv`.
   if (envFilePath) {
     // eslint-disable-next-line no-console
     log({
@@ -54,11 +42,8 @@ function registerEnvFile() {
   }
 }
 
-// Ensure that we first register any environment variables from an existing
-// env file.
+// Run our `.env` resolver to register the environment variables
 registerEnvFile()
-
-// EXPORTED HELPERS
 
 /**
  * Gets a string environment variable by the given name.
