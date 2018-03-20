@@ -53,6 +53,7 @@ class HotClientServer {
             'Build failed, please check the console for more information.',
           notify: true,
         })
+
         console.error(stats.toString())
       } else {
         log({
