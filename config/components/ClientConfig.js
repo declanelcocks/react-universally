@@ -1,26 +1,23 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import serialize from 'serialize-javascript'
+
 import filterWithRules from '../../shared/utils/objects/filterWithRules'
 import values from '../values'
 
-// Filter the config down to the properties that are allowed to be included
-// in the HTML response.
 const clientConfig = filterWithRules(
-  // These are the rules used to filter the config.
+  // Rules used to extract the client specific config values
   values.clientConfigFilter,
-  // The config values to filter.
+  // The config values
   values,
 )
 
 const serializedClientConfig = serialize(clientConfig)
 
 /**
- * A react component that generates a script tag that binds the allowed
- * values to the window so that config values can be read within the
- * browser.
- *
- * They get bound to window.__CLIENT_CONFIG__
+ * This component is used to attach the serialized client config
+ * to `window.__CLIENT_CONFIG__`. These variables are defined in
+ * `config/values.js` under `clientConfig`.
  */
 function ClientConfig({ nonce }) {
   return (

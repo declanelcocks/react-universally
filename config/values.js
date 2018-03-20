@@ -4,39 +4,32 @@
  * NOTE: All file/folder paths should be relative to the project root. The
  * absolute paths should be resolved during runtime by our build internal/server.
  */
-
 import * as EnvVars from './utils/envVars'
 
 const values = {
   // The configuration values that should be exposed to our client bundle.
-  // This value gets passed through the /shared/utils/objects/filterWithRules
-  // util to create a filter object that can be serialised and included
-  // with our client bundle.
+  // These values will get passed through `/shared/utils/objects/filterWithRules`,
+  // then serialized and included in our client bundle
   clientConfigFilter: {
-    // This is here as an example showing that you can expose variables
-    // that were potentially provivded by the environment
     welcomeMessage: true,
-    // We only need to expose the enabled flag of the service worker.
     serviceWorker: {
       enabled: true,
     },
-    // We need to expose all the polyfill.io settings.
     polyfillIO: true,
-    // We need to expose all the htmlPage settings.
     htmlPage: true,
     apiUrl: true,
   },
 
-  // The host on which the server should run.
+  // Server host
   host: EnvVars.string('HOST', 'localhost'),
 
-  // The port on which the server should run.
+  // Server port
   port: EnvVars.number('PORT', 1337),
 
   // Default URL to use when making API requests
   apiUrl: EnvVars.string('API_URL', 'http://localhost:3000/api'),
 
-  // The port on which the client bundle development server should run.
+  // Client bundle development server port
   clientDevServerPort: EnvVars.number('CLIENT_DEV_PORT', 7331),
 
   // This is an example environment variable which is used within the react
@@ -48,10 +41,8 @@ const values = {
   disableSSR: false,
 
   // How long should we set the browser cache for the served assets?
-  // Don't worry, we add hashes to the files, so if they change the new files
-  // will be served to browsers.
-  // We are using the "ms" format to set the length.
-  // @see https://www.npmjs.com/package/ms
+  // Changed files will still be served to the browser as we add hashes to each of
+  // our files depending on the contents of the file.
   browserCacheMaxAge: '365d',
 
   // We use the polyfill.io service which provides the polyfills that a
@@ -74,7 +65,6 @@ const values = {
 
   // Basic configuration for the HTML page that hosts our application.
   // We make use of react-helmet to consume the values below.
-  // @see https://github.com/nfl/react-helmet
   htmlPage: {
     titleTemplate: 'React, Universally - %s',
     defaultTitle: 'React, Universally',
@@ -94,8 +84,7 @@ const values = {
     manifestSrc: [],
     objectSrc: [],
     scriptSrc: [
-      // Allow scripts from cdn.polyfill.io so that we can import the
-      // polyfill.
+      // Allow scripts from cdn.polyfill.io
       'cdn.polyfill.io',
     ],
     styleSrc: [
@@ -104,15 +93,13 @@ const values = {
     ],
   },
 
-  // Path to the public assets that will be served off the root of the
-  // HTTP server.
+  // Public assets folder served from the root of the HTTP server
   publicAssetsPath: './public',
 
-  // Where does our build output live?
+  // Build output folder?
   buildOutputPath: './build',
 
-  // Do you want to included source maps for optimised builds of the client
-  // bundle?
+  // Include source maps for optimised builds of the client bundle?
   includeSourceMapsForOptimisedClientBundle: false,
 
   // These extensions are tried when resolving src files for our bundles..
@@ -135,7 +122,7 @@ const values = {
     /\.(css|scss|sass|sss|less)$/,
   ],
 
-  // Note: you can only have a single service worker instance.  Our service
+  // Note: you can only have a single service worker instance. Our service
   // worker implementation is bound to the "client" and "server" bundles.
   // It includes the "client" bundle assets, as well as the public folder assets,
   // and it is served by the "server" bundle.
@@ -156,48 +143,38 @@ const values = {
       // assets.
       './**/*',
     ],
-    // Offline page file name.
+    // Offline page file name
     offlinePageFileName: 'offline.html',
   },
 
   bundles: {
     client: {
-      // Src entry file.
+      // Src entry file
       srcEntryFile: './client/index.js',
 
-      // Src paths.
+      // Src paths
       srcPaths: [
         './client',
         './shared',
-        // The service worker offline page generation needs access to the
-        // config folder.  Don't worry we have guards within the config files
-        // to ensure they never get included in a client bundle.
+        // The service worker will have access to the config folder, but due
+        // to the environment checks, it won't have access to any values it
+        // shouldn't be seeing
         './config',
       ],
 
-      // Where does the client bundle output live?
+      // Client bundle output folder?
       outputPath: './build/client',
 
-      // What is the public http path at which we must serve the bundle from?
+      // Public http path we serve the bundle from?
       webPath: '/client/',
 
-      // Configuration settings for the development vendor DLL.  This will be created
-      // by our development server and provides an improved dev experience
-      // by decreasing the number of modules that webpack needs to process
-      // for every rebuild of our client bundle.  It by default uses the
-      // dependencies configured in package.json however you can customise
-      // which of these dependencies are excluded, whilst also being able to
-      // specify the inclusion of additional modules below.
+      // Create a DLL bundle to improve dev experience. This will decrease the number
+      // of modules that Webpack needs to process for every rebuild.
       devVendorDLL: {
         // Enabled?
         enabled: true,
 
-        // Specify any dependencies that you would like to include in the
-        // Vendor DLL.
-        //
-        // NOTE: It is also possible that some modules require specific
-        // webpack loaders in order to be processed (e.g. CSS/SASS etc).
-        // For these cases you don't want to include them in the Vendor DLL.
+        // Ddependencies to include in the Vendor DLL.
         include: [
           'react',
           'react-dom',
@@ -214,19 +191,19 @@ const values = {
           'react-modal',
         ],
 
-        // The name of the vendor DLL.
+        // Vendor DLL name
         name: '__dev_vendor_dll__',
       },
     },
 
     server: {
-      // Src entry file.
+      // Src entry file
       srcEntryFile: './server/index.js',
 
-      // Src paths.
+      // Src paths
       srcPaths: ['./server', './shared', './config'],
 
-      // Where does the server bundle output live?
+      // Server bundle output folder
       outputPath: './build/server',
     },
   },
@@ -256,13 +233,9 @@ const values = {
     */
   },
 
-  // These plugin definitions provide you with advanced hooks into customising
-  // the project without having to reach into the internals of the tools.
-  //
-  // We have decided to create this plugin approach so that you can come to
-  // a centralised configuration folder to do most of your application
-  // configuration adjustments.  Additionally it helps to make merging
-  // from the origin starter kit a bit easier.
+  // These plugin definitions provide a centralised place for config settings
+  // without having to reach into the internals of each tool. This also helps
+  // with any future changes as all configurations are stored in one place.
   plugins: {
     // This plugin allows you to provide final adjustments your babel
     // configurations for each bundle before they get processed.

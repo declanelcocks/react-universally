@@ -1,58 +1,56 @@
-/**
- * Unified Configuration Reader
- *
- * This helper function allows you to use the same API in accessing configuration
- * values no matter where the code is being executed (i.e. browser/node).
- *
- * e.g.
- *   import config from '../config'
- *   config('welcomeMessage') // => "Hello World!"
- */
-
 /* eslint-disable no-console */
 /* eslint-disable import/global-require */
 /* eslint-disable no-underscore-dangle */
 
-// PRIVATES
+/**
+ * The config helper allows you to use the same API in accessing config values
+ * no matter where the code is being executed (i.e. browser/node).
+ *
+ * e.g.
+ *   import config from '../config'
+ *   config('messages.welcome') // => "Hello World!"
+ *
+ * Why?
+ * 1. It's annoying having to create different config setups for each environment
+ * 2. We could use Webpack's `DefinePlugin`, but these values are statically bound
+ *    during the build process. This means that with `FOO=bar npm run start`, `FOO`
+ *    wouldn't be available during the build process.
+ *
+ * How?
+ * Instead, we generate a config object and attach it to `window.__CLIENT_CONFIG__`
+ * within the HTML that's sent to the browser. This ensures the client config is
+ * correctly exposed to the browser.
+ */
 
 let configCache
 
 /**
- * This resolves the correct configuration source based on the execution
- * environment.  For node we use the standard config file, however, for browsers
- * we need to access the configuration object that would have been bound to
- * the "window" by our "reactApplication" middleware.
+ * Resolves the correct config based on our environment. For node we use the
+ * standard config file. For browsers we use the object bound to `window` by
+ * our `reactApplication` middleware.
  *
- * @return {Object} The executing environment configuration object.
+ * @return {Object} The environment's config object
  */
 function resolveConfigForBrowserOrNode() {
-  if (configCache) {
-    return configCache
-  }
+  if (configCache) return configCache
 
-  // NOTE: By using the "process.env.BUILD_FLAG_IS_NODE" flag here this block of code
-  // will be removed when "process.env.BUILD_FLAG_IS_NODE === true".
-  // If no "BUILD_FLAG_IS_NODE" env var is undefined we can assume that we are running outside
-  // of a webpack run, and will therefore return the config file.
+  // Running in Node
   if (
     typeof process.env.BUILD_FLAG_IS_NODE === 'undefined' ||
     process.env.BUILD_FLAG_IS_NODE === 'true'
   ) {
-    // i.e. running in our server/node process.
-    // eslint-disable-next-line global-require
-    configCache = require('./values').default
+    configCache = require('./values').default // eslint-disable-line global-require
     return configCache
   }
 
-  // To get here we are likely running in the browser.
-
+  // Running in the browser
   if (
     typeof window !== 'undefined' &&
     typeof window.__CLIENT_CONFIG__ === 'object'
   ) {
     configCache = window.__CLIENT_CONFIG__
   } else {
-    // To get here we must be running in the browser.
+    // Assume we are running in the browser
     console.warn('No client configuration object was bound to the window.')
     configCache = {}
   }
@@ -60,51 +58,34 @@ function resolveConfigForBrowserOrNode() {
   return configCache
 }
 
-// EXPORT
-
 /**
- * This function wraps up the boilerplate needed to access the correct
- * configuration depending on whether your code will get executed in the
- * browser/node.
+ * Takes care of fetching the required config value. Depending on the environment,
+ * it will fetch the config from either `window.__CLIENT_CONFIG__` or
+ * `<root>/config/values.js` and try to get the value.
  *
- *  - For the browser the config values are accessible from "window.__CLIENT_CONFIG__"
- *  - For a node process they are accessible from "<root>/config/values.js".
- *
- * To request a configuration value you must provide the repective path. For
- * example, f you had the following configuration structure:
- *   {
- *     foo: {
- *       bar: [1, 2, 3]
- *     },
- *     bob: 'bob'
- *   }
- *
- * You can use this function to access "bar" like so:
- *   import config from '../config'
- *   const value = config('foo.bar')
- *
- * And you can access "bob" like so:
- *   import config from '../config'
- *   const value = config('bob')
- *
- * If any part of the path isn't available as a configuration key/value then
- * an error will be thrown indicating that a respective configuration value
- * could not be found at the given path.
+ * If we can't find the value, an error will be thrown informing the user the path
+ * cannot be found in the respective config object.
  */
 export default function get(path) {
   const parts = typeof path === 'string' ? path.split('.') : path
 
+  // No path passed in
   if (parts.length === 0) {
     throw new Error(
       'You must provide the path to the configuration value you would like to consume.',
     )
   }
+
+  // Fetch the config object according to the environment
   let result = resolveConfigForBrowserOrNode()
+
+  // Resolve the requested path within the config object
   for (let i = 0; i < parts.length; i += 1) {
     if (result === undefined) {
       const errorMessage = `Failed to resolve configuration value at "${parts.join(
         '.',
       )}".`
+
       // This "if" block gets stripped away by webpack for production builds.
       if (
         process.env.BUILD_FLAG_IS_DEV === 'true' &&
@@ -114,9 +95,12 @@ export default function get(path) {
           `${errorMessage} We have noticed that you are trying to access this configuration value from the client bundle (i.e. code that will be executed in a browser). For configuration values to be exposed to the client bundle you must ensure that the path is added to the client configuration filter in the project configuration values file.`,
         )
       }
+
       throw new Error(errorMessage)
     }
+
     result = result[parts[i]]
   }
+
   return result
 }
