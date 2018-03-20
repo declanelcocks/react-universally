@@ -1,7 +1,6 @@
 /**
- * This script builds a production output of all of our bundles.
+ * Build a production output of all bundles.
  */
-
 import webpack from 'webpack'
 import appRootDir from 'app-root-dir'
 import { resolve as pathResolve } from 'path'
@@ -14,7 +13,7 @@ const [x, y, ...args] = process.argv
 
 const optimize = args.findIndex(arg => arg === '--optimize') !== -1
 
-// First clear the build output dir.
+// First, clean the build folder.
 exec(`rimraf ${pathResolve(appRootDir.get(), config('buildOutputPath'))}`)
 
 // Get our "fixed" bundle names
@@ -26,6 +25,7 @@ Object.keys(config('bundles'))
     const compiler = webpack(
       webpackConfigFactory({ target: bundleName, optimize }),
     )
+
     compiler.run((err, stats) => {
       if (err) {
         console.error(err.stack || err)

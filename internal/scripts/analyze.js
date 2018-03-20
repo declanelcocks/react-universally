@@ -1,11 +1,7 @@
 /**
- * This script creates a webpack stats file on our production build of the
- * client bundle and then launches the webpack-bundle-analyzer tool allowing
- * you to easily see what is being included within your bundle.
- *
- * @see https://github.com/th0r/webpack-bundle-analyzer
+ * This script creates a webpack stats file for a production client bundle
+ * and launches `webpack-bundle-analyzer`.
  */
-
 import webpack from 'webpack'
 import fs from 'fs'
 import { resolve as pathResolve } from 'path'
