@@ -1,19 +1,20 @@
 /* eslint-disable no-console */
-
 import Modernizr from 'modernizr'
 import '../../shared/polyfills'
 
-// This is just an illustrative example.  Here you are testing the client's
-// support for the "picture" element, and if it isn't supported then you
-// load a polyfill.
+/**
+ * This file is used to polyfill any web APIs that you want to support.
+ *
+ * For example, below we are checking if the client supports the "picture"
+ * element. If it doesn't support it, we can polyfill it.
+ *
+ * This file will be imported by `client/index.js` and ran when the app
+ * is client loads the app.
+ */
 if (!Modernizr.picture) {
   console.log('Client does not support "picture", polyfilling it...')
-  // If you want to use the below do a `npm install picturefill` and then
-  // uncomment the lines below:
-  /*
-  require('picturefill')
-  require('picturefill/dist/plugins/mutation/pf.mutation')
-  */
+  // require('picturefill')
+  // require('picturefill/dist/plugins/mutation/pf.mutation')
 } else {
   console.log('Client has support for "picture".')
 }
