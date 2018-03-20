@@ -19,7 +19,6 @@ const onResponsive = (hostname, port, cb) =>
   )
 
 // Prompt the user to select port if it's already taken.
-// Resolves with newly selected port or null if cancelled.
 choosePort(host, config('port'))
   .then(port =>
     detect(config('clientDevServerPort')).then(clientPort => [
@@ -36,7 +35,7 @@ choosePort(host, config('port'))
     let HotDevelopment = require('./hotDevelopment').default
     let devServer = new HotDevelopment(port, clientPort)
 
-    // Any changes to our webpack bundleConfigs should restart the development devServer.
+    // Any changes to webpack bundleConfigs should restart the dev server.
     const watcher = chokidar.watch([
       pathResolve(appRootDir.get(), 'internal'),
       pathResolve(appRootDir.get(), 'config'),
@@ -60,19 +59,17 @@ choosePort(host, config('port'))
             }
           })
 
-          // Re-require the development devServer so that all new configs are used.
+          // Create a new development server when any files change
           HotDevelopment = require('./hotDevelopment').default
-
-          // Create a new development devServer.
           devServer = new HotDevelopment(port, clientPort)
         })
       })
 
-      // Wait until devServer is started to open browser
+      // Wait until devServer is responsive, then open the browser
       onResponsive(host, port, () => openBrowser(`http://${host}:${port}`))
     })
 
-    // If we receive a kill cmd then we will first try to dispose our listeners.
+    // When receiving a kill cmd, first try to dispose the listeners.
     process.on(
       'SIGTERM',
       () => devServer && devServer.dispose().then(() => process.exit(0)),

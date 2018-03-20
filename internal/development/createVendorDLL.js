@@ -8,14 +8,11 @@ import { log } from '../utils'
 
 function createVendorDLL(bundleName, bundleConfig) {
   const dllConfig = config('bundles.client.devVendorDLL')
-
   const pkg = require(pathResolve(appRootDir.get(), './package.json'))
-
   const devDLLDependencies = dllConfig.include.sort()
 
-  // We calculate a hash of the package.json's dependencies, which we can use
-  // to determine if dependencies have changed since the last time we built
-  // the vendor dll.
+  // Calculate a hash of the package.json's dependencies. This means our vendor
+  // DLL bundle will rebuild if the version of any dependency changes.
   const currentDependenciesHash = md5(
     JSON.stringify(
       devDLLDependencies.map(dep => [
@@ -23,12 +20,11 @@ function createVendorDLL(bundleName, bundleConfig) {
         pkg.dependencies[dep],
         pkg.devDependencies[dep],
       ]),
-      // We do this to include any possible version numbers we may have for
-      // a dependency. If these change then our hash should too, which will
-      // result in a new dev dll build.
     ),
   )
 
+  // Where to put our dependency hash. This will typically be put in
+  // `/build/client/`.
   const vendorDLLHashFilePath = pathResolve(
     appRootDir.get(),
     bundleConfig.outputPath,
@@ -37,10 +33,11 @@ function createVendorDLL(bundleName, bundleConfig) {
 
   function webpackConfigFactory() {
     return {
-      // Force development mode as the dev server should only be ran while development
+      // Force development mode for the dev server.
       mode: 'development',
-      // We only use this for development, so lets always include source maps.
+      // It's development, so always include source maps.
       devtool: 'inline-source-map',
+      // Point our entry file to all of the specified DLL dependencies.
       entry: {
         [dllConfig.name]: devDLLDependencies,
       },
@@ -62,6 +59,7 @@ function createVendorDLL(bundleName, bundleConfig) {
     }
   }
 
+  // Runs Webpack with the above config to create the DLL file.
   function buildVendorDLL() {
     return new Promise((resolve, reject) => {
       log({
@@ -74,6 +72,7 @@ function createVendorDLL(bundleName, bundleConfig) {
 
       const webpackConfig = webpackConfigFactory()
       const vendorDLLCompiler = webpack(webpackConfig)
+
       vendorDLLCompiler.run(err => {
         if (err) {
           reject(err)
@@ -89,7 +88,6 @@ function createVendorDLL(bundleName, bundleConfig) {
 
   return new Promise((resolve, reject) => {
     if (!fs.existsSync(vendorDLLHashFilePath)) {
-      // builddll
       log({
         title: 'vendorDLL',
         level: 'warn',
@@ -99,12 +97,13 @@ The Vendor DLL helps to speed up your development workflow by reducing Webpack b
 
 We recommend that you add all your client bundle specific dependencies to the Vendor DLL configuration (within /config).`,
       })
+
       buildVendorDLL()
         .then(resolve)
         .catch(reject)
     } else {
-      // first check if the md5 hashes match
       const dependenciesHash = fs.readFileSync(vendorDLLHashFilePath, 'utf8')
+      // Check if the dependencies for the DLL bundle have changed.
       const dependenciesChanged = dependenciesHash !== currentDependenciesHash
 
       if (dependenciesChanged) {
@@ -113,6 +112,7 @@ We recommend that you add all your client bundle specific dependencies to the Ve
           level: 'warn',
           message: `New "${bundleName}" vendor dependencies detected. Regenerating the vendor dll...`,
         })
+
         buildVendorDLL()
           .then(resolve)
           .catch(reject)
@@ -122,6 +122,7 @@ We recommend that you add all your client bundle specific dependencies to the Ve
           level: 'info',
           message: `No changes to existing "${bundleName}" vendor dependencies. Using the existing vendor dll.`,
         })
+
         resolve()
       }
     }
