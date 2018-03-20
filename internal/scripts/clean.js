@@ -1,7 +1,6 @@
 /**
- * This script removes any exisitng build output.
+ * Remove any exisitng build files.
  */
-
 import { resolve as pathResolve } from 'path'
 import appRootDir from 'app-root-dir'
 import rimraf from 'rimraf'
