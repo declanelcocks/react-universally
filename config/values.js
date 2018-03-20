@@ -122,25 +122,15 @@ const values = {
     /\.(css|scss|sass|sss|less)$/,
   ],
 
-  // Note: you can only have a single service worker instance. Our service
-  // worker implementation is bound to the "client" and "server" bundles.
-  // It includes the "client" bundle assets, as well as the public folder assets,
+  // The SW includes the "client" bundle assets, as well as the public folder assets,
   // and it is served by the "server" bundle.
   serviceWorker: {
-    // Enabled?
     enabled: true,
-    // Service worker name
+    // SW name
     fileName: 'sw.js',
-    // Paths to the public assets which should be included within our
-    // service worker. Relative to our public folder path, and accepts glob
-    // syntax.
+    // Paths to public assets to be included by the SW. Accepts glob syntax.
     includePublicAssets: [
-      // NOTE: This will include ALL of our public folder assets.  We do
-      // a glob pull of them and then map them to /foo paths as all the
-      // public folder assets get served off the root of our application.
-      // You may or may not want to be including these assets.  Feel free
-      // to remove this or instead include only a very specific set of
-      // assets.
+      // NOTE: This will include ALL of our public folder assets.
       './**/*',
     ],
     // Offline page file name
