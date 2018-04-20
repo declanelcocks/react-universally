@@ -10,9 +10,9 @@ storiesOf('Label', module)
       <P>this is some text</P>
     </div>
   ))
-  .add('danger palette', () => (
+  .add('red palette', () => (
     <div>
-      <Label palette="danger">Hello</Label>
+      <Label palette="red">Hello</Label>
       <P>this is some text</P>
     </div>
   ))

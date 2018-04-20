@@ -3,16 +3,36 @@ import PropTypes from 'prop-types'
 import styled, { css } from 'styled-components'
 import Link from 'react-router-dom/Link'
 import { font, palette } from 'styled-theme'
-import { ifProp } from 'styled-tools'
+import { ifProp, switchProp, prop } from 'styled-tools'
 
-const backgroundColor = ({ transparent, disabled }) =>
-  transparent ? 'transparent' : palette(disabled ? 5 : 3)
+const backgroundColor = ({ transparent }) =>
+  transparent ? 'transparent' : palette(3)
 
 const foregroundColor = ({ transparent, disabled }) =>
-  transparent ? palette(disabled ? 5 : 3) : palette('grayscale', 0, true)
+  transparent
+    ? palette(disabled ? 5 : 3)
+    : switchProp(
+        prop('palette'),
+        {
+          primary: palette('grayscale', 0, true),
+          secondary: palette('accent', 3),
+          accent: palette('secondary', 3),
+        },
+        palette('grayscale', 0, true),
+      )
 
 const hoverBackgroundColor = ({ disabled, transparent }) =>
-  !disabled && !transparent && palette(2)
+  !disabled &&
+  !transparent &&
+  switchProp(
+    prop('palette'),
+    {
+      primary: palette(2),
+      secondary: palette(4),
+      accent: palette(2),
+    },
+    palette(2),
+  )
 const hoverForegroundColor = ({ disabled, transparent }) =>
   !disabled && transparent && palette(2)
 
@@ -20,6 +40,7 @@ const styles = css`
   display: block;
   font-family: ${font('primary')};
   font-size: 1rem;
+  font-weight: 700;
   line-height: ${ifProp('small', '1rem', '1.5rem')};
   border: 0.0625rem solid
     ${ifProp('transparent', 'currentcolor', 'transparent')};
@@ -42,18 +63,18 @@ const styles = css`
   transition: all 0.15s ease;
   background-color: ${backgroundColor};
   color: ${foregroundColor};
+  ${ifProp(
+    'disabled',
+    css`
+      opacity: 0.65;
+    `,
+  )};
 
   &:hover,
   &:focus,
   &:active {
-    transform: translateY(-1px);
-    box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
     background-color: ${hoverBackgroundColor};
     color: ${hoverForegroundColor};
-  }
-
-  &:focus {
-    outline: none;
   }
 `
 

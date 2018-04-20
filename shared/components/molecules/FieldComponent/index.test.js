@@ -1,16 +1,17 @@
 import React from 'react'
 import { shallow, mount } from 'enzyme'
 
-import Field from '.'
+import FieldComponent from '.'
 
 const mockProps = {
   input: { name: 'name', onChange: () => {} },
   meta: {},
 }
 
-const wrap = props => shallow(<Field name="name" {...mockProps} {...props} />)
+const wrap = props =>
+  shallow(<FieldComponent name="name" {...mockProps} {...props} />)
 const wrapWithMount = props =>
-  mount(<Field name="name" {...mockProps} {...props} />)
+  mount(<FieldComponent name="name" {...mockProps} {...props} />)
 
 it('renders input props when passed in', () => {
   const wrapper = wrap({ id: 'foo' })

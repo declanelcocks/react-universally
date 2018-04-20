@@ -19,7 +19,9 @@ const options = [
   { label: 'Option #3', value: 3 },
 ]
 
-storiesOf('Field', module).add('default', () => (
+const SearchField = props => <FieldComponent icon="bell" {...props} />
+
+storiesOf('Form', module).add('default', () => (
   <Form
     onSubmit={values => console.log(values)}
     subscription={{ submitting: true, pristine: true }}
@@ -84,6 +86,15 @@ storiesOf('Field', module).add('default', () => (
           label="Female"
           value="female"
           component={FieldComponent}
+          validate={required}
+        />
+
+        <Field
+          name="iconField"
+          type="input"
+          label="Field With Icon"
+          placeholder="Placeholder..."
+          component={SearchField}
           validate={required}
         />
 
