@@ -3,10 +3,14 @@ import PropTypes from 'prop-types'
 import styled, { css } from 'styled-components'
 import { ifProp } from 'styled-tools'
 
-import logo from './logo.svg'
+import Icon from '../Icon'
 
-const Img = styled.img`
+const Wrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 0.25rem;
+
   ${ifProp(
     { size: 'small' },
     css`
@@ -20,8 +24,17 @@ const Img = styled.img`
   )};
 `
 
+const StyledIcon = styled(Icon)`
+  width: 100%;
+  height: 100%;
+`
+
 function Logo(props) {
-  return <Img src={logo} alt="Logo" {...props} />
+  return (
+    <Wrapper {...props}>
+      <StyledIcon icon="logo" />
+    </Wrapper>
+  )
 }
 
 Logo.defaultProps = {

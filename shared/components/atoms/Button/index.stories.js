@@ -7,29 +7,46 @@ storiesOf('Button', module)
   .add('default', () => (
     <div>
       <Button>Hello</Button>
+      <Button palette="secondary">Hello</Button>
+      <Button palette="accent">Hello</Button>
+    </div>
+  ))
+  .add('primary palette', () => (
+    <div>
       <Button>Hello</Button>
-      <Button>Hello</Button>
+      <Button disabled>Hello</Button>
+      <Button transparent>Hello</Button>
+      <Button transparent disabled>
+        Hello
+      </Button>
     </div>
   ))
-  .add('another palette', () => (
+  .add('secondary palette', () => (
     <div>
       <Button palette="secondary">Hello</Button>
-      <Button palette="secondary">Hello</Button>
-      <Button palette="secondary">Hello</Button>
+      <Button palette="secondary" disabled>
+        Hello
+      </Button>
+      <Button palette="secondary" transparent>
+        Hello
+      </Button>
+      <Button palette="secondary" transparent disabled>
+        Hello
+      </Button>
     </div>
   ))
-  .add('disabled', () => (
+  .add('accent palette', () => (
     <div>
-      <Button disabled>Hello</Button>
-      <Button disabled>Hello</Button>
-      <Button disabled>Hello</Button>
-    </div>
-  ))
-  .add('transparent', () => (
-    <div>
-      <Button transparent>Hello</Button>
-      <Button transparent>Hello</Button>
-      <Button transparent>Hello</Button>
+      <Button palette="accent">Hello</Button>
+      <Button palette="accent" disabled>
+        Hello
+      </Button>
+      <Button palette="accent" transparent>
+        Hello
+      </Button>
+      <Button palette="accent" transparent disabled>
+        Hello
+      </Button>
     </div>
   ))
   .add('link', () => (

@@ -1,13 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 152.34 272.43">
   <defs>
     <style>
-      .a{fill:#1f55fa;}
-      .b{fill:#053be1;}
-      .c{fill:#517bfb;}
-      .d{fill:#517bfb;}
-      .e{fill:#83a1fc;}
-      .f{fill:#053be1;}
-      .g{fill:#83a1fc;}
+      .a{fill:#006efb;}
+      .b{fill:#004195;}
+      .c{fill:#0058c8;}
+      .d{fill:#0058c8;}
+      .e{fill:#2f8aff;}
+      .f{fill:#004195;}
+      .g{fill:#2f8aff;}
     </style>
   </defs>
   <path class="a" d="M85.24,5.45c-.41-3.27.31-3.46,1.6-.43l63.8,150.43c1.29,3-.35,5.44-3.65,5.35l-36.44-1.07a7.25,7.25,0,0,1-6.74-6.13Z"/>

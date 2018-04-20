@@ -404,7 +404,6 @@ export default function webpackConfigFactory(buildOptions) {
               ),
             ),
 
-            // Use modernizr to allow feature detection within the client.
             ifClient({
               test: /\.modernizrrc.js$/,
               loader: 'modernizr-loader',

@@ -10,7 +10,7 @@ import { switchProp, prop } from 'styled-tools'
 
 const styles = css`
   font-family: ${font('primary')};
-  color: ${palette({ grayscale: 0 }, 3)};
+  color: ${palette('secondary', 3)};
   font-weight: 400;
   font-size: ${switchProp(prop('level'), {
     1: '3.375rem',
@@ -43,13 +43,11 @@ const Heading = styled(
 Heading.propTypes = {
   level: PropTypes.number,
   children: PropTypes.node,
-  palette: PropTypes.string,
   reverse: PropTypes.bool,
 }
 
 Heading.defaultProps = {
   level: 1,
-  palette: 'grayscale',
 }
 
 export default Heading

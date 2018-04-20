@@ -1,31 +1,37 @@
 import React from 'react'
+import styled from 'styled-components'
 import { storiesOf } from '@storybook/react'
 import Block from '.'
 
+const StyledBlock = styled(Block)`
+  height: 100px;
+  width: 100px;
+`
+
 storiesOf('Block', module)
   .add('default', () => (
-    <Block>
+    <StyledBlock>
       Officia aliqua reprehenderit fugiat occaecat quis non eiusmod.
-    </Block>
+    </StyledBlock>
   ))
   .add('inline', () => (
     <div>
-      <Block inline>My first Block.</Block>
-      <Block inline>My second Block.</Block>
+      <StyledBlock inline>My first StyledBlock.</StyledBlock>
+      <StyledBlock inline>My second StyledBlock.</StyledBlock>
     </div>
   ))
-  .add('reverse', () => (
-    <Block reverse>
+  .add('primary palette', () => (
+    <StyledBlock palette="primary">
       Officia aliqua reprehenderit fugiat occaecat quis non eiusmod.
-    </Block>
+    </StyledBlock>
   ))
-  .add('palette', () => (
-    <Block palette="primary">
+  .add('secondary palette', () => (
+    <StyledBlock palette="secondary">
       Officia aliqua reprehenderit fugiat occaecat quis non eiusmod.
-    </Block>
+    </StyledBlock>
   ))
-  .add('palette opaque', () => (
-    <Block palette="primary" opaque>
+  .add('accent palette', () => (
+    <StyledBlock palette="accent">
       Officia aliqua reprehenderit fugiat occaecat quis non eiusmod.
-    </Block>
+    </StyledBlock>
   ))

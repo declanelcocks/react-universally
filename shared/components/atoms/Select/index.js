@@ -10,26 +10,30 @@ import { palette } from 'styled-theme'
 import { ifProp } from 'styled-tools'
 
 import Badge from '../Badge'
+import Icon from '../Icon'
 
 const StyledReactSelect = styled(ReactSelect)`
   .Select-control {
     box-shadow: none !important;
     border-radius: 2px;
     border: 0.0625rem solid
-      ${ifProp(
-        ['invalid', 'isDirty'],
-        palette('danger', 3),
-        palette('grayscale', 4),
-      )} !important;
+      ${ifProp('invalid', palette('red', 3), palette('grayscale', 4))} !important;
   }
 
   &.is-focused .Select-control,
   &.is-open .Select-control {
     border-color: ${ifProp(
-      ['invalid', 'isDirty'],
-      palette('danger', 3),
+      'invalid',
+      palette('red', 3),
       palette('grayscale', 4),
     )} !important;
+  }
+
+  &.is-open .Select-control .Select-arrow-zone {
+    transform: rotate(180deg);
+    transition: transform 0.15s ease;
+    padding-left: 0.3125rem; // 5px
+    padding-right: 0;
   }
 
   .Select-multi-value-wrapper {
@@ -62,11 +66,7 @@ const StyledReactSelect = styled(ReactSelect)`
 
   .Select-menu-outer {
     border: 0.0625rem solid
-      ${ifProp(
-        ['invalid', 'isDirty'],
-        palette('danger', 3),
-        palette('grayscale', 4),
-      )};
+      ${ifProp('invalid', palette('red', 3), palette('grayscale', 4))};
     border-top-color: ${palette('grayscale', 5)};
 
     .Select-option.is-focused {
@@ -74,7 +74,10 @@ const StyledReactSelect = styled(ReactSelect)`
     }
   }
 `
-
+const SelectIcon = styled(Icon)`
+  vertical-align: middle;
+  color: ${palette('grayscale', 4)};
+`
 const SingleSelectValue = ({ value, options }) => {
   // RANGE type
   if (isArray(value)) {
@@ -127,7 +130,7 @@ const singleSelectChangeHandler = func => value =>
 const multiSelectChangeHandler = func => values =>
   func(values.map(value => value.value))
 
-const Select = ({ options, input, type, invalid, setIsDirty, ...props }) => {
+const Select = ({ options, input, type, invalid, ...props }) => {
   const multi = type === 'multi-select'
   // https://github.com/erikras/redux-form/issues/2229
   // https://github.com/erikras/redux-form/issues/2805
@@ -143,10 +146,13 @@ const Select = ({ options, input, type, invalid, setIsDirty, ...props }) => {
     <SingleSelectValue options={options} {...props} />
   )
 
+  const arrowRenderer = () => <SelectIcon icon="arrow-down" />
+
   return (
     <StyledReactSelect
       className="select"
       autoBlur
+      arrowRenderer={arrowRenderer}
       options={options}
       multi={multi}
       onChange={
@@ -159,7 +165,6 @@ const Select = ({ options, input, type, invalid, setIsDirty, ...props }) => {
       {...selectProps}
       {...props}
       onBlur={val => {
-        setIsDirty(true)
         input.onBlur(val)
       }}
     />
@@ -171,9 +176,6 @@ Select.propTypes = {
   type: PropTypes.string.isRequired,
   input: PropTypes.object.isRequired,
   invalid: PropTypes.bool,
-  // Manually set dirty to allow us to correctly show our error/invalid
-  // state as `react-select` doesn't handle it well enough
-  setIsDirty: PropTypes.func.isRequired,
 }
 
 export default Select
