@@ -6,17 +6,21 @@ import Button from '.'
 storiesOf('Button', module)
   .add('default', () => (
     <div>
-      <Button>Hello</Button>
+      <Button palette="primary">Hello</Button>
       <Button palette="secondary">Hello</Button>
       <Button palette="accent">Hello</Button>
     </div>
   ))
   .add('primary palette', () => (
     <div>
-      <Button>Hello</Button>
-      <Button disabled>Hello</Button>
-      <Button transparent>Hello</Button>
-      <Button transparent disabled>
+      <Button palette="primary">Hello</Button>
+      <Button palette="primary" disabled>
+        Hello
+      </Button>
+      <Button palette="primary" transparent>
+        Hello
+      </Button>
+      <Button palette="primary" transparent disabled>
         Hello
       </Button>
     </div>
