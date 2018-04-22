@@ -16,6 +16,7 @@ const Block = styled.div`
     primary: palette('white', 0),
     secondary: palette('white', 0),
     accent: palette('secondary', 3),
+    red: palette(3),
   })};
   ${ifProp(
     'inline',

@@ -2,49 +2,22 @@
 
 exports[`<Home /> renders 1`] = `
 <Menu__MenuWrapper>
-  <Menu__LogoLink
+  <Menu__StyledLink
     to="/"
   >
     <Logo
       size="small"
+      withText={true}
     />
-  </Menu__LogoLink>
-  <Menu__List>
-    <li>
-      <MenuLink
-        to="/"
-      >
-        Home
-      </MenuLink>
-    </li>
-    <li>
-      <MenuLink
-        to="/counter"
-      >
-        Counter
-      </MenuLink>
-    </li>
-    <li>
-      <MenuLink
-        to="/posts"
-      >
-        Posts
-      </MenuLink>
-    </li>
-    <li>
-      <MenuLink
-        to="/about"
-      >
-        About
-      </MenuLink>
-    </li>
-  </Menu__List>
-  <MenuLink
+  </Menu__StyledLink>
+  <Menu__StyledLink
     to="/cart"
   >
     <Icon
+      height="1.5"
       icon="cart"
+      palette="secondary"
     />
-  </MenuLink>
+  </Menu__StyledLink>
 </Menu__MenuWrapper>
 `;

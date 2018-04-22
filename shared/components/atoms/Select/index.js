@@ -15,9 +15,13 @@ import Icon from '../Icon'
 const StyledReactSelect = styled(ReactSelect)`
   .Select-control {
     box-shadow: none !important;
-    border-radius: 2px;
+    border-radius: 0.25rem;
     border: 0.0625rem solid
-      ${ifProp('invalid', palette('red', 3), palette('grayscale', 4))} !important;
+      ${ifProp('invalid', palette('danger', 3), palette('grayscale', 4))};
+
+    > *:last-child {
+      padding-right: 0.5rem;
+    }
   }
 
   &.is-focused .Select-control,
@@ -31,8 +35,7 @@ const StyledReactSelect = styled(ReactSelect)`
 
   &.is-open .Select-control .Select-arrow-zone {
     transform: rotate(180deg);
-    transition: transform 0.15s ease;
-    padding-left: 0.3125rem; // 5px
+    padding-left: 0.5rem;
     padding-right: 0;
   }
 

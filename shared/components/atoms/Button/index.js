@@ -11,28 +11,20 @@ const backgroundColor = ({ transparent }) =>
 const foregroundColor = ({ transparent, disabled }) =>
   transparent
     ? palette(disabled ? 5 : 3)
-    : switchProp(
-        prop('palette'),
-        {
-          primary: palette('grayscale', 0, true),
-          secondary: palette('accent', 3),
-          accent: palette('secondary', 3),
-        },
-        palette('grayscale', 0, true),
-      )
+    : switchProp(prop('palette', palette('grayscale', 0, true)), {
+        primary: palette('grayscale', 0, true),
+        secondary: palette('accent', 3),
+        accent: palette('secondary', 3),
+      })
 
 const hoverBackgroundColor = ({ disabled, transparent }) =>
   !disabled &&
   !transparent &&
-  switchProp(
-    prop('palette'),
-    {
-      primary: palette(2),
-      secondary: palette(4),
-      accent: palette(2),
-    },
-    palette(2),
-  )
+  switchProp(prop('palette', palette(2)), {
+    primary: palette(2),
+    secondary: palette(4),
+    accent: palette(2),
+  })
 const hoverForegroundColor = ({ disabled, transparent }) =>
   !disabled && transparent && palette(2)
 
@@ -112,7 +104,7 @@ Button.propTypes = {
 }
 
 Button.defaultProps = {
-  palette: 'primary',
+  palette: 'secondary',
   type: 'button',
 }
 

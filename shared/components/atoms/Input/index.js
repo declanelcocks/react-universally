@@ -1,12 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled, { css } from 'styled-components'
-import { font, palette } from 'styled-theme'
+import { palette } from 'styled-theme'
 import { ifProp } from 'styled-tools'
 
 const styles = css`
   display: block;
-  font-family: ${font('primary')};
+  width: 100%;
   font-size: 1rem;
   /* height */
   ${ifProp(
@@ -23,14 +23,29 @@ const styles = css`
     css`
       min-height: 6rem;
     `,
-  )} padding: ${ifProp({ type: 'textarea' }, '0.5rem', '0 0.5rem')};
+  )};
+  padding: ${ifProp({ type: 'textarea' }, '0.5rem', '0 0.5rem')};
   box-sizing: border-box;
-  color: ${palette('grayscale', 0)};
-  background-color: ${palette('grayscale', 0, true)};
+  color: ${ifProp(
+    'disabled',
+    palette('grayscale', 3),
+    palette('grayscale', 0),
+  )};
+  background-color: ${ifProp(
+    'disabled',
+    palette('grayscale', 5),
+    palette('grayscale', 0, true),
+  )};
+  border-radius: 0.25rem;
   border: 0.0625rem solid
-    ${ifProp('invalid', palette('red', 3), palette('grayscale', 4))};
-  border-radius: 2px;
+    ${ifProp('invalid', palette('danger', 3), palette('grayscale', 4))};
   outline: none;
+  ${ifProp(
+    'disabled',
+    css`
+      cursor: default;
+    `,
+  )};
 
   &[type='checkbox'],
   &[type='radio'] {
@@ -43,7 +58,11 @@ const styles = css`
   }
 
   &::placeholder {
-    color: ${palette('grayscale', 4)};
+    color: ${ifProp(
+      'disabled',
+      palette('grayscale', 3),
+      palette('grayscale', 4),
+    )};
   }
 `
 
