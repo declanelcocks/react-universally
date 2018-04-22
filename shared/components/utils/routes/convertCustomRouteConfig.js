@@ -1,3 +1,5 @@
+import generateAsyncRoute from './generateAsyncRoute'
+
 export default function convertCustomRouteConfig(
   customRouteConfig,
   parentRoute,
@@ -17,7 +19,10 @@ export default function convertCustomRouteConfig(
     const pathResult = `${parentRoute || ''}${route.path}`
     return {
       path: pathResult,
-      component: route.component,
+      defaultPath: route.defaultPath,
+      component:
+        route.component ||
+        generateAsyncRoute({ loader: () => import('./componentLessRoute') }),
       exact: route.exact,
       routes: route.routes
         ? convertCustomRouteConfig(route.routes, pathResult)
