@@ -17,7 +17,7 @@ const StyledReactSelect = styled(ReactSelect)`
     box-shadow: none !important;
     border-radius: 0.25rem;
     border: 0.0625rem solid
-      ${ifProp('invalid', palette('danger', 3), palette('grayscale', 4))};
+      ${ifProp('invalid', palette('danger', 3), palette('grayscale', 4))} !important;
 
     > *:last-child {
       padding-right: 0.5rem;
