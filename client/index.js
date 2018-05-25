@@ -56,7 +56,7 @@ function renderApp(App) {
 }
 
 // Load all the required components for the requested URL
-ensureReady(routes, window.location.pathname).then(() => {
+ensureReady(routes, { url: window.location.pathname }).then(() => {
   renderApp(App)
 })
 

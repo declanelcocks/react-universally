@@ -8,8 +8,9 @@ import {
 import { StaticRouter } from 'react-router-dom'
 import { ServerStyleSheet, ThemeProvider } from 'styled-components'
 import { Provider } from 'react-redux'
-import configureStore from '../../../shared/redux/configureStore'
+import cookie from 'cookie'
 
+import configureStore from '../../../shared/redux/configureStore'
 import config from '../../../config'
 import routes from '../../../shared/components/routes'
 import { ensureReady } from '../../../shared/components/utils/routes'
@@ -27,7 +28,9 @@ export default function reactApplicationMiddleware(request, response) {
   if (typeof response.locals.nonce !== 'string') {
     throw new Error('A "nonce" value has not been attached to the response')
   }
-  const { locals: { nonce } } = response
+  const {
+    locals: { nonce },
+  } = response
 
   const sheet = new ServerStyleSheet()
 
@@ -55,9 +58,14 @@ export default function reactApplicationMiddleware(request, response) {
   const reactRouterContext = {}
 
   // Create the redux store.
-  const store = configureStore()
+  let token
+  if (request.headers.cookie) {
+    const { token: _token } = cookie.parse(request.headers.cookie)
+    token = _token
+  }
+  const store = configureStore({}, token)
 
-  ensureReady(routes, request.url, store).then(() => {
+  ensureReady(routes, request, store).then(() => {
     const app = (
       <StaticRouter location={request.url} context={reactRouterContext}>
         <Provider store={store}>

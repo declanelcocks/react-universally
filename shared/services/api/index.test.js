@@ -1,4 +1,6 @@
 import toUpper from 'lodash/toUpper'
+import cookie from 'cookie'
+
 import api, { checkStatus, parseJSON, parseSettings, parseEndpoint } from '.'
 import config from '../../../config'
 
@@ -8,16 +10,25 @@ describe('checkStatus', () => {
   it('returns response when it is ok', () => {
     const response = { ok: true }
 
-    expect(checkStatus(response)).resolves.toBe(response)
+    expect(checkStatus(response)).resolves.toEqual(response)
   })
 
-  it('throws an Error with a message when it is not ok', () => {
+  it('throws an Error', () => {
     const response = {
       ok: false,
       json: () => new Promise(resolve => resolve({ ok: false })),
     }
 
-    return expect(checkStatus(response)).rejects.toThrowError(
+    expect(checkStatus(response)).rejects.toEqual(expect.any(Error))
+  })
+
+  it('throws an Error with a message when a message is not included in the response', () => {
+    const response = {
+      ok: false,
+      json: () => new Promise(resolve => resolve({ ok: false })),
+    }
+
+    expect(checkStatus(response)).rejects.toEqual(
       expect.objectContaining({
         message: expect.any(String),
       }),
@@ -32,8 +43,10 @@ describe('checkStatus', () => {
       json: () => new Promise(resolve => resolve({ ok: false })),
     }
 
-    return expect(checkStatus(response)).rejects.toThrowError(
-      /^401 Unauthorized$/gm,
+    expect(checkStatus(response)).rejects.toEqual(
+      expect.objectContaining({
+        message: expect.stringMatching(/^401 Unauthorized$/gm),
+      }),
     )
   })
 
@@ -44,7 +57,7 @@ describe('checkStatus', () => {
         new Promise(resolve => resolve({ ok: false, message: 'error msg' })),
     }
 
-    return expect(checkStatus(response)).rejects.toThrow(
+    expect(checkStatus(response)).rejects.toEqual(
       expect.objectContaining({
         message: expect.stringContaining('error msg'),
       }),
@@ -59,8 +72,10 @@ describe('checkStatus', () => {
       json: () => new Promise((resolve, reject) => reject()),
     }
 
-    return expect(checkStatus(response)).rejects.toThrowError(
-      /^401 Unauthorized$/gm,
+    expect(checkStatus(response)).rejects.toEqual(
+      expect.objectContaining({
+        message: expect.stringMatching(/^401 Unauthorized$/gm),
+      }),
     )
   })
 })
@@ -171,10 +186,11 @@ describe('api', () => {
       const obj = api.create({ headers: { foo: 'bar' } })
 
       obj.setToken('token')
+
       expect(obj.settings).toEqual({
         headers: {
           foo: 'bar',
-          Authorization: 'Bearer token',
+          cookie: cookie.serialize('token', String('token'), { path: '/' }),
         },
       })
     })
@@ -183,7 +199,7 @@ describe('api', () => {
       const obj = api.create({
         headers: {
           foo: 'bar',
-          Authorization: 'Bearer token',
+          cookie: 'some token',
         },
       })
 

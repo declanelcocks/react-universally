@@ -3,6 +3,8 @@ import 'isomorphic-fetch'
 import { stringify } from 'qs'
 import merge from 'lodash/merge'
 import toUpper from 'lodash/toUpper'
+import cookie from 'cookie'
+import Cookies from 'js-cookie'
 
 import config from '../../../config'
 
@@ -13,26 +15,44 @@ export const checkStatus = response =>
     return response
       .json()
       .then(jsonError => {
-        const error = new Error(
-          jsonError.message || `${response.status} ${response.statusText}`,
-        )
+        let error
+
+        if (
+          jsonError.errors &&
+          Array.isArray(jsonError.errors) &&
+          jsonError.errors.length > 0
+        ) {
+          error = new Error(
+            jsonError.errors[0].message ||
+              jsonError.errors[0].msg ||
+              `${response.status} ${response.statusText}`,
+          )
+        } else {
+          error = new Error(
+            jsonError.message || `${response.status} ${response.statusText}`,
+          )
+        }
+
         error.response = jsonError
 
-        reject(error)
+        return reject(error)
       })
       .catch(() => {
         const error = new Error(`${response.status} ${response.statusText}`)
         error.response = response
 
-        reject(error)
+        return reject(error)
       })
   })
 
 export const parseJSON = response => response.json()
 
-export const parseSettings = (
-  { method = 'get', data, locale, ...otherSettings } = {},
-) => {
+export const parseSettings = ({
+  method = 'get',
+  data,
+  locale,
+  ...otherSettings
+} = {}) => {
   const headers = {
     Accept: 'application/json',
     'Content-Type': 'application/json',
@@ -43,6 +63,7 @@ export const parseSettings = (
     {
       body: data ? JSON.stringify(data) : undefined,
       method: toUpper(method),
+      credentials: 'include',
       headers,
     },
     otherSettings,
@@ -77,16 +98,31 @@ api.create = (settings = {}) => ({
   settings,
 
   setToken(token) {
+    // Ensure document.cookie is kept up-to-dater if in the browser
+    Cookies.set(
+      'token',
+      token,
+      // Requires cookies to be passed through HTTPS
+      // { httpOnly: true },
+    )
+
     this.settings.headers = {
       ...this.settings.headers,
-      Authorization: `Bearer ${token}`,
+      cookie: cookie.serialize('token', String(token), {
+        // Requires cookies to be passed through HTTPS
+        // httpOnly: true,
+        path: '/',
+      }),
     }
   },
 
   unsetToken() {
+    // Ensure document.cookie is kept up-to-dater if in the browser
+    Cookies.remove('token')
+
     this.settings.headers = {
       ...this.settings.headers,
-      Authorization: undefined,
+      cookie: undefined,
     }
   },
 
