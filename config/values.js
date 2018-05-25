@@ -18,6 +18,7 @@ const values = {
     polyfillIO: true,
     htmlPage: true,
     apiUrl: true,
+    authApiUrl: true,
   },
 
   // Server host
@@ -28,6 +29,7 @@ const values = {
 
   // Default URL to use when making API requests
   apiUrl: EnvVars.string('API_URL', 'http://localhost:3000/api'),
+  authApiUrl: EnvVars.string('AUTH_URL', 'http://localhost:3000/auth'),
 
   // Client bundle development server port
   clientDevServerPort: EnvVars.number('CLIENT_DEV_PORT', 7331),

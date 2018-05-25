@@ -1,10 +1,14 @@
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux'
 import thunk from 'redux-thunk'
-import apiService from '../services/api'
-import reducer from './reducers'
-import reducerRegistry from './reducerRegistry'
 
-function configureStore(initialState = {}) {
+import apiService from '../services/api'
+import reducerRegistry from './reducerRegistry'
+import authReducer from './authentication/reducer'
+
+function configureStore(initialState = {}, apiToken) {
+  const api = apiService.create()
+  if (apiToken) api.setToken(apiToken)
+
   const enhancers = compose(
     // Middleware store enhancer.
     applyMiddleware(
@@ -12,7 +16,9 @@ function configureStore(initialState = {}) {
       // arguments to all the redux-thunk actions. Below we are passing a
       // preconfigured api instance which can be used to fetch data with.
       // @see https://github.com/gaearon/redux-thunk
-      thunk.withExtraArgument({ api: apiService.create() }),
+      thunk.withExtraArgument({
+        api,
+      }),
     ),
     // Redux Dev Tools store enhancer.
     // @see https://github.com/zalmoxisus/redux-devtools-extension
@@ -36,6 +42,8 @@ function configureStore(initialState = {}) {
     })
     return combineReducers(reducers)
   }
+
+  reducerRegistry.register('authentication', authReducer)
 
   const store = createStore(
     combine(reducerRegistry.getReducers()),
