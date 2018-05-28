@@ -10,7 +10,7 @@ const mockStore = configureMockStore(middlewares)
 
 describe('fetchPosts', () => {
   it('creates FETCHED_POST when fetching posts is done', () => {
-    mockFetch(200, null, { id: 1 })
+    createMockFetch(200, null, { id: 1 })
     const store = mockStore({})
 
     return store.dispatch(fetchPosts(1)).then(() => {
