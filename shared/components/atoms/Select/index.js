@@ -153,6 +153,7 @@ const Select = ({ options, input, type, invalid, ...props }) => {
 
   return (
     <StyledReactSelect
+      instanceId={input.name}
       className="select"
       autoBlur
       arrowRenderer={arrowRenderer}

@@ -10,7 +10,7 @@
     "jest": true
   },
   "globals": {
-    "mockFetch": true
+    "createMockFetch": true
   },
   "rules": {
     "semi": [2, "never"],
